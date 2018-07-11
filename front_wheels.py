@@ -20,35 +20,35 @@ class Front_Wheels(object):
 		self.wheel = Servo.Servo(self._channel, bus_number=bus_number, offset=self.turning_offset)
 		self.debug = debug
 		if self._DEBUG:
-			print self._DEBUG_INFO, 'Front wheel PWM channel:', self._channel
-			print self._DEBUG_INFO, 'Front wheel offset value:', self.turning_offset
+			print(self._DEBUG_INFO, 'Front wheel PWM channel:', self._channel)
+			print(self._DEBUG_INFO, 'Front wheel offset value:', self.turning_offset)
 
 		self._angle = {"left":self._min_angle, "straight":self._straight_angle, "right":self._max_angle}
 		if self._DEBUG:
-			print self._DEBUG_INFO, 'left angle: %s, straight angle: %s, right angle: %s' % (self._angle["left"], self._angle["straight"], self._angle["right"])
+			print(self._DEBUG_INFO, 'left angle: %s, straight angle: %s, right angle: %s' % (self._angle["left"], self._angle["straight"], self._angle["right"]))
 
 	def turn_left(self):
 		''' Turn the front wheels left '''
 		if self._DEBUG:
-			print self._DEBUG_INFO, "Turn left"
+			print(self._DEBUG_INFO, "Turn left")
 		self.wheel.write(self._angle["left"])
 
 	def turn_straight(self):
 		''' Turn the front wheels back straight '''
 		if self._DEBUG:
-			print self._DEBUG_INFO, "Turn straight"
+			print(self._DEBUG_INFO, "Turn straight")
 		self.wheel.write(self._angle["straight"])
 
 	def turn_right(self):
 		''' Turn the front wheels right '''
 		if self._DEBUG:
-			print self._DEBUG_INFO, "Turn right"
+			print(self._DEBUG_INFO, "Turn right")
 		self.wheel.write(self._angle["right"])
 
 	def turn(self, angle):
 		''' Turn the front wheels to the giving angle '''
 		if self._DEBUG:
-			print self._DEBUG_INFO, "Turn to", angle
+			print(self._DEBUG_INFO, "Turn to", angle)
 		if angle < self._angle["left"]:
 			angle = self._angle["left"]
 		if angle > self._angle["right"]:
@@ -98,25 +98,25 @@ class Front_Wheels(object):
 			raise ValueError('debug must be "True" (Set debug on) or "False" (Set debug off), not "{0}"'.format(debug))
 
 		if self._DEBUG:
-			print self._DEBUG_INFO, "Set debug on"
-			print self._DEBUG_INFO, "Set wheel debug on"
+			print(self._DEBUG_INFO, "Set debug on")
+			print(self._DEBUG_INFO, "Set wheel debug on")
 			self.wheel.debug = True
 		else:
-			print self._DEBUG_INFO, "Set debug off"
-			print self._DEBUG_INFO, "Set wheel debug off"
+			print(self._DEBUG_INFO, "Set debug off")
+			print(self._DEBUG_INFO, "Set wheel debug off")
 			self.wheel.debug = False
 
 	def ready(self):
 		''' Get the front wheels to the ready position. '''
 		if self._DEBUG:
-			print self._DEBUG_INFO, 'Turn to "Ready" position'
+			print(self._DEBUG_INFO, 'Turn to "Ready" position')
 		self.wheel.offset = self.turning_offset
 		self.turn_straight()
 
 	def calibration(self):
 		''' Get the front wheels to the calibration position. '''
 		if self._DEBUG:
-			print self._DEBUG_INFO, 'Turn to "Calibration" position'
+			print(self._DEBUG_INFO, 'Turn to "Calibration" position')
 		self.turn_straight()
 		self.cali_turning_offset = self.turning_offset
 
@@ -136,29 +136,6 @@ class Front_Wheels(object):
 		''' Save the calibration value '''
 		self.turning_offset = self.cali_turning_offset
 		self.db.set('turning_offset', self.turning_offset)
-
-def test(chn=0):
-	import time
-	front_wheels = Front_Wheels(channel=chn)
-	try:
-		while True:
-			print "turn_left"
-			front_wheels.turn_left()
-			time.sleep(1)
-			print "turn_straight"
-			front_wheels.turn_straight()
-			time.sleep(1)
-			print "turn_right"
-			front_wheels.turn_right()
-			time.sleep(1)
-			print "turn_straight"
-			front_wheels.turn_straight()
-			time.sleep(1)
-	except KeyboardInterrupt:
-		front_wheels.turn_straight()
-
-if __name__ == '__main__':
-	test()
 
 
 
