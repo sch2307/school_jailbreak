@@ -1,9 +1,8 @@
 ######################################################################
-### Date: 2017/10/5
-### file name: project3_student.py
-### Purpose: this code has been generated for the three-wheeled moving
-###         object to perform the project3 with ultra sensor
-###         swing turn, and point turn
+### Date: 2018/07/12
+### file name: project_main.py
+### Purpose: this code has been generated for the 4WD moving
+###         object to perform the project with ultra sensor
 ### this code is used for the student only
 ######################################################################
 
@@ -26,36 +25,33 @@ GPIO.setwarnings(False)
 # =======================================================================
 # import ALL method in the rear/front Motor Module 
 # =======================================================================
-import rear_wheel
-import front_wheel
-
-# =======================================================================
-# import ALL method in the steering_libs
-# =======================================================================
-import steering_libs
+import rear_wheels
+import front_wheels
 
 # =======================================================================    
 # setup and initilaize the left motor and right motor
 # =======================================================================
 
+def lineVar_Initialize():
+    
+
 if __name__ == "__main__":
-    print("START SETUP")
-    steering_libs.pwm_setup()
-    rear_wheel.setup()
-    front_wheel.setup()
-    print("SETUP COMPLETE")
+    
+    global isLineFollower
+    
+    # FRONT WHEEL SETUP
+    FR = front_wheels.Front_Wheels(db='config')
+    FR.ready()
+    
+    # REAR WHEEL SETUP
+    rear_wheels.setup()
+    
     try:
         while True:
             # =======================================================================    
             # setup and initilaize the left motor and right motor
             # =======================================================================
-            
-            #TEST MODULE
-            print('start moving')
-            # rear_wheel.forwardWithSpeed()
-            # front_wheel.turn(50)
-            # rear_wheel.forward()
-            front_wheel.home()
+            FR.turn(70)
             
     except KeyboardInterrupt:
             # when the Ctrl+C key has been pressed,
