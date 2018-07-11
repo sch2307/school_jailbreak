@@ -6,27 +6,38 @@
 ### this code is used for the student only
 ######################################################################
 
+
 # =======================================================================
 # import GPIO library and time module 
 # =======================================================================
 import RPi.GPIO as GPIO
 import time
 
+
 # =======================================================================
 #  set GPIO warnings as false 
 # =======================================================================
 GPIO.setwarnings(False)
 
+
 # =======================================================================
-# import getDistance() method in the ultraModule 
+# import ALL method in the SEN040134 Tracking Module
+# =======================================================================
+from SEN040134 import SEN040134_Tracking
+
+
+# =======================================================================
+# import ALL method in the SR02 Ultrasonic Module
 # =======================================================================
 from SR02 import SR02_Ultrasonic
+
 
 # =======================================================================
 # import ALL method in the rear/front Motor Module 
 # =======================================================================
 import rear_wheels
 import front_wheels
+
 
 # =======================================================================    
 # setup and initilaize the left motor and right motor
@@ -40,14 +51,17 @@ max_off_track_count = 40
 
 delay = 0.0005
 
+
 def straight_run():
     while True:
         rear_wheels.forwardWithSpeed(70)
         FR.turn_straight()
 
+
 def setup():
     if calibrate:
         cali()
+
 
 def lineFollwer_main():
     global turning_angle
@@ -61,7 +75,7 @@ def lineFollwer_main():
     rear_wheels.forwardWithSpeed(forward_speed)
 
     while True:
-        lt_status_now = []
+        lt_status_now = LF.read_digital()
         # Angle calculate
         if lt_status_now == [0, 0, 1, 0, 0]:
             step = 0
@@ -95,7 +109,7 @@ def lineFollwer_main():
                 rear_wheels.backwardWithSpeed(backward_speed)
                 FR.turn(tmp_angle)
 
-                #lf.wait_tile_center()
+                LF.wait_tile_center()
                 rear_wheels.stop()
 
                 FR.turn(turning_angle)
@@ -109,6 +123,7 @@ def lineFollwer_main():
         FR.turn(turning_angle)
         time.sleep(delay)
 
+
 def cali():
     mount = 100
     FR.turn(70)
@@ -121,7 +136,7 @@ def cali():
     FR.turn(85)
     time.sleep(0.5)
     FR.turn(90)
-    time.slee(1)
+    time.sleep(1)
 
     FR.turn(110)
     print("\n cali black")
@@ -141,9 +156,11 @@ def cali():
     # print("Middle references =", references)
     # time.sleep(1)
 
+
 def destroy():
     rear_wheels.pwm_low()
     FR.turn(90)
+
 
 if __name__ == "__main__":
     try:
@@ -152,18 +169,23 @@ if __name__ == "__main__":
             # setup and initilaize the left motor and right motor
             # =======================================================================
 
-            # ULTRASONIC MODULE ACTIVE
+            # ULTRASONIC MODULE DRIVER ACTIVE
             UA = SR02_Ultrasonic.Ultrasonic_Avoidance(35);
 
-            # FRONT WHEEL SETUP
+            # TRACKING MODULE DRIVER ACTIVE
+            LF = SEN040134_Tracking.SEN040134_Tracking([16, 18, 22, 40, 32])
+
+            # FRONT WHEEL DRIVER SETUP
             FR = front_wheels.Front_Wheels(db='config')
             FR.ready()
 
-            # REAR WHEEL SETUP
+            # REAR WHEEL DRIVER SETUP
             rear_wheels.setup()
 
             # IS LINE FOLLOWER FR VAR SETUP
             FR.turning_max = 45
+
+            #lineFollwer_main()
             
     except KeyboardInterrupt:
             # when the Ctrl+C key has been pressed,
