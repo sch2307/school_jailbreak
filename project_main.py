@@ -27,6 +27,11 @@ from SEN040134 import SEN040134_Tracking
 
 
 # =======================================================================
+# import ALL method in the TCS34725 RGB Module
+# =======================================================================
+# from TCS34725 import TCS34725_RGB
+
+# =======================================================================
 # import ALL method in the SR02 Ultrasonic Module
 # =======================================================================
 from SR02 import SR02_Ultrasonic
@@ -42,9 +47,9 @@ import front_wheels
 # =======================================================================    
 # setup and initilaize the left motor and right motor
 # =======================================================================
-forward_speed = 80
-backward_speed = 70
-turning_angle = 40
+forward_speed = 30
+backward_speed = 30
+turning_angle = 35
 
 calibrate = False
 max_off_track_count = 40
@@ -75,9 +80,17 @@ def lineFollwer_main():
     rear_wheels.forwardWithSpeed(forward_speed)
 
     while True:
+
+	#SR02-Ultrasonic avoidance
+	uDistance = UA.get_distance()
+	if uDistance <= 3:
+		print("DISTANCE", uDistance)
+		rear_wheels.stop()
+		break
+
         lt_status_now = LF.read_digital()
         # Angle calculate
-        if lt_status_now == [0, 0, 1, 0, 0]:
+        if lt_status_now == [0, 0, 1, 0, 0] or lt_status_now == [0, 1, 1, 1, 0]:
             step = 0
         elif lt_status_now == [0, 1, 1, 0, 0] or lt_status_now == [0, 0, 1, 1, 0]:
             step = a_step
@@ -87,6 +100,8 @@ def lineFollwer_main():
             step = c_step
         elif lt_status_now == [1, 0, 0, 0, 0] or lt_status_now == [0, 0, 0, 0, 1]:
             step = d_step
+        else:
+            step = 0
 
         # Direction calculate
         if lt_status_now == [0, 0, 1, 0, 0]:
@@ -164,30 +179,38 @@ def destroy():
 
 if __name__ == "__main__":
     try:
-        while True:
-            # =======================================================================    
-            # setup and initilaize the left motor and right motor
-            # =======================================================================
+        # =======================================================================    
+        # setup and initilaize the left motor and right motor
+        # =======================================================================
 
-            # ULTRASONIC MODULE DRIVER ACTIVE
-            UA = SR02_Ultrasonic.Ultrasonic_Avoidance(35);
+        # ULTRASONIC MODULE DRIVER INITIALIZE
+        UA = SR02_Ultrasonic.Ultrasonic_Avoidance(35);
 
-            # TRACKING MODULE DRIVER ACTIVE
-            LF = SEN040134_Tracking.SEN040134_Tracking([16, 18, 22, 40, 32])
+        # TRACKING MODULE DRIVER INITIALIZE
+        LF = SEN040134_Tracking.SEN040134_Tracking([16, 18, 22, 40, 32])
 
-            # FRONT WHEEL DRIVER SETUP
-            FR = front_wheels.Front_Wheels(db='config')
-            FR.ready()
+        # RGB MOUDLE DRIVER INITIALIZE
+        # RM = TCS34725_RGB.TCS34725()
 
-            # REAR WHEEL DRIVER SETUP
-            rear_wheels.setup()
+        # FRONT WHEEL DRIVER SETUP
+        FR = front_wheels.Front_Wheels(db='config')
+        FR.ready()
 
-            # IS LINE FOLLOWER FR VAR SETUP
-            FR.turning_max = 45
+        # REAR WHEEL DRIVER SETUP
+        rear_wheels.setup()
 
-            #lineFollwer_main()
-            
+        # IS LINE FOLLOWER FR VAR SETUP
+        FR.turning_max = 35
+        
+        # RM.enable()
+        # print(RM.get_gain())
+        FR.turn_straight()
+        lineFollwer_main()
+
+        #FR.turn_left()
+        #FR.turn_right()
+        
     except KeyboardInterrupt:
             # when the Ctrl+C key has been pressed,
             # the moving object will be stopped
-        rear_wheels.pwm_low()
+        rear_wheels.stop()
