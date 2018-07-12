@@ -8,7 +8,7 @@ class Ultrasonic_Avoidance(object):
 
     def __init__(self, channel):
         self.channel = channel
-        GPIO.setmode(GPIO.BCM)
+        GPIO.setmode(GPIO.BOARD)
 
     def get_distance(self):
         pulse_end = 0
