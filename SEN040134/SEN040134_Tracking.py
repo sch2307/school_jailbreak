@@ -19,11 +19,6 @@ class SEN040134_Tracking(object):
 
     def __init__(self, channel):
         # =======================================================================
-        #  set GPIO warnings as false
-        # =======================================================================
-        GPIO.setwarnings(False)
-
-        # =======================================================================
         # set up GPIO mode as BOARD
         # =======================================================================
         GPIO.setmode(GPIO.BOARD)
@@ -41,7 +36,8 @@ class SEN040134_Tracking(object):
         # =======================================================================
 
         global gpio_channel
-        self.gpio_channel = channel
+        gpio_channel = channel
+        print("gpio channel", gpio_channel)
 
         for i in range(0, 5):
             GPIO.setup(gpio_channel[i], GPIO.IN)
@@ -71,8 +67,10 @@ class SEN040134_Tracking(object):
     def read_digital(self):
         digital_list = []
         for i in range(0, 5):
-            GPIO.setup(gpio_channel[i], GPIO.IN)
+            temp = GPIO.input(gpio_channel[i])
+            digital_list.append(0 if temp == 1 else 1)
         return digital_list
+
 
     def found_line_in(self, timeout):
         if isinstance(timeout, int) or isinstance(timeout, float):
@@ -90,11 +88,13 @@ class SEN040134_Tracking(object):
             time_during = time_now - time_start
         return False
 
+
     def wait_tile_status(self, status):
         while True:
             lt_status = self.read_digital()
             if lt_status in status:
                 break
+
 
     def wait_tile_center(self):
         while True:
