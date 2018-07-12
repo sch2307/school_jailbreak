@@ -33,7 +33,7 @@ def setSpeed(speed):
 
 
 def setup(busnum=None):
-    global forward0, forward1, backward1, backward0, pwm
+    global forward0, forward1, backward0, backward1, pwm
 
     if busnum == None:
         pwm = p.PWM()  # Initialize the servo controller.
@@ -41,8 +41,8 @@ def setup(busnum=None):
         pwm = p.PWM(bus_number=busnum)  # Initialize the servo controller.
 
     pwm.frequency = 60
-    forward0 = 'True'
-    forward1 = 'True'
+    forward0 = True
+    forward1 = False
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)  # Number GPIOs by its physical location
     try:
@@ -53,14 +53,14 @@ def setup(busnum=None):
                 forward1 = line[11:-1]
     except:
         pass
-    if forward0 == 'True':
-        backward0 = 'False'
-    elif forward0 == 'False':
-        backward0 = 'True'
-    if forward1 == 'True':
-        backward1 = 'False'
-    elif forward1 == 'False':
-        backward1 = 'True'
+    if forward0:
+        backward0 = False
+    else:
+        backward0 = True
+    if forward1:
+        backward1 = False
+    else:
+        backward1 = True
     for pin in pins:
         GPIO.setup(pin, GPIO.OUT)  # Set all pins' mode as output
 
@@ -71,10 +71,10 @@ def setup(busnum=None):
 # ===========================================================================
 
 def left_motor(x):
-    if x == 'True':
+    if x:
         GPIO.output(Motor0_A, GPIO.HIGH)
         GPIO.output(Motor0_B, GPIO.LOW)
-    elif x == 'False':
+    elif not x:
         GPIO.output(Motor0_A, GPIO.LOW)
         GPIO.output(Motor0_B, GPIO.HIGH)
     else:
@@ -82,12 +82,14 @@ def left_motor(x):
 
 
 def right_motor(x):
-    if x == 'True':
+    if x:
         GPIO.output(Motor1_A, GPIO.LOW)
         GPIO.output(Motor1_B, GPIO.HIGH)
-    elif x == 'False':
+    elif not x:
         GPIO.output(Motor1_A, GPIO.HIGH)
         GPIO.output(Motor1_B, GPIO.LOW)
+    else:
+        print('Config Error')
 
 
 def forward():
