@@ -131,11 +131,11 @@ def calculate_lux(r, g, b):
 class TCS34725(object):
     """TCS34725 color sensor."""
     def __init__(self, integration_time=TCS34725_INTEGRATIONTIME_2_4MS,
-                 gain=TCS34725_GAIN_4X, address=TCS34725_ADDRESS, i2c=None, **kwargs):
+                 gain=TCS34725_GAIN_60X, address=TCS34725_ADDRESS, i2c=None, **kwargs):
         """Initialize the TCS34725 sensor."""
         # Setup I2C interface for the device.
         if i2c is None:
-            import Adafruit_GPIO.I2C as I2C
+            import I2C as I2C
             i2c = I2C
         self._device = i2c.get_i2c_device(address, **kwargs)
         # Make sure we're connected to the sensor.
