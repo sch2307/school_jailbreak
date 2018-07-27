@@ -41,26 +41,26 @@ def setup(busnum=None):
         pwm = p.PWM(bus_number=busnum)  # Initialize the servo controller.
 
     pwm.frequency = 60
-    forward0 = True
-    forward1 = False
+    leftMotorDirection = True
+    rightMotorDirection = False
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)  # Number GPIOs by its physical location
     try:
         for line in open("config"):
             if line[0:8] == "forward0":
-                forward0 = line[11:-1]
+                leftMotorDirection = line[11:-1]
             if line[0:8] == "forward1":
-                forward1 = line[11:-1]
+                rightMotorDirection = line[11:-1]
     except:
         pass
-    if forward0:
-        backward0 = False
+    if leftMotorDirection:
+        leftMotorReverseDirection = False
     else:
-        backward0 = True
-    if forward1:
-        backward1 = False
+        leftMotorReverseDirection = True
+    if rightMotorDirection:
+        rightMotorReverseDirection = False
     else:
-        backward1 = True
+        rightMotorReverseDirection = True
     for pin in pins:
         GPIO.setup(pin, GPIO.OUT)  # Set all pins' mode as output
 
@@ -70,22 +70,22 @@ def setup(busnum=None):
 # move forward.
 # ===========================================================================
 
-def left_motor(x):
-    if x:
+def left_motor(isReverse):
+    if isReverse:
         GPIO.output(Motor0_A, GPIO.HIGH)
         GPIO.output(Motor0_B, GPIO.LOW)
-    elif not x:
+    elif not isReverse:
         GPIO.output(Motor0_A, GPIO.LOW)
         GPIO.output(Motor0_B, GPIO.HIGH)
     else:
         print('Config Error')
 
 
-def right_motor(x):
-    if x:
+def right_motor(isReverse):
+    if isReverse:
         GPIO.output(Motor1_A, GPIO.LOW)
         GPIO.output(Motor1_B, GPIO.HIGH)
-    elif not x:
+    elif not isReverse:
         GPIO.output(Motor1_A, GPIO.HIGH)
         GPIO.output(Motor1_B, GPIO.LOW)
     else:
@@ -93,25 +93,25 @@ def right_motor(x):
 
 
 def forward():
-    left_motor(forward0)
-    right_motor(forward1)
+    left_motor(leftMotorDirection)
+    right_motor(rightMotorDirection)
 
 
 def backward():
-    left_motor(backward0)
-    right_motor(backward1)
+    left_motor(leftMotorReverseDirection)
+    right_motor(rightMotorReverseDirection)
 
 
-def forwardWithSpeed(spd=50):
-    setSpeed(spd)
-    left_motor(forward0)
-    right_motor(forward1)
+def forwardWithSpeed(speedValue):
+    setSpeed(speedValue)
+    left_motor(leftMotorDirection)
+    right_motor(rightMotorDirection)
 
 
-def backwardWithSpeed(spd=50):
-    setSpeed(spd)
-    left_motor(backward0)
-    right_motor(backward1)
+def backwardWithSpeed(speedValue):
+    setSpeed(speedValue)
+    left_motor(leftMotorReverseDirection)
+    right_motor(rightMotorReverseDirection)
 
 
 def stop():
