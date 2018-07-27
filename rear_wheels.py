@@ -48,9 +48,9 @@ def setup(busnum=None):
     try:
         for line in open("config"):
             if line[0:8] == "forward0":
-                leftMotorDirection = line[11:-1]
+                leftMotorDirection = True if line[11:-1] == "True" else False
             if line[0:8] == "forward1":
-                rightMotorDirection = line[11:-1]
+                rightMotorDirection = True if line[11:-1] == "True" else False
     except:
         pass
     if leftMotorDirection:
