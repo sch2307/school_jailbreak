@@ -33,9 +33,9 @@ def setSpeed(speed):
 
 
 def setup(busnum=None):
-    global forward0, forward1, backward0, backward1, pwm
+    global leftMotorDirection, rightMotorDirection, leftMotorReverseDirection, rightMotorReverseDirection, pwm
 
-    if busnum == None:
+    if busnum is None:
         pwm = p.PWM()  # Initialize the servo controller.
     else:
         pwm = p.PWM(bus_number=busnum)  # Initialize the servo controller.
