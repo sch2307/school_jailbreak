@@ -48,15 +48,12 @@ def setup(busnum=None):
     try:
         for line in open("config"):
             if line[0:8] == "forward0":
-<<<<<<< HEAD
                 leftMotorDirection = True if line[11:-1] == "True" else False
             if line[0:8] == "forward1":
                 rightMotorDirection = True if line[11:-1] == "True" else False
-=======
                 forward0 = line[11:-1]
             if line[0:8] == "forward1":
                 forward1 = line[11:-1]
->>>>>>> parent of 0bcc09a... update source code to fit PEP8
     except:
         pass
     if forward0:
