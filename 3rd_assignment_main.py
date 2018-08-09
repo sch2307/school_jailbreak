@@ -1,6 +1,6 @@
 ######################################################################
 # Date: 2018/08/09
-# file name: 2nd_assignment_main.py
+# file name: 3rd_assignment_main.py
 # Purpose: this code has been generated for the 4WD moving
 #         object to perform the project with ultra sensor
 # this code is used for the student only
@@ -46,8 +46,8 @@ import front_wheels
 
 
 # =======================================================================
-# 2ND_ASSIGNMENT_CODE
-# Complete the code to perform Second Assignment
+# 3RD_ASSIGNMENT_CODE
+# Complete the code to perform Third Assignment
 # =======================================================================
 def lineFollower_main():
     pass:
