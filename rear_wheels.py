@@ -32,7 +32,7 @@ def setSpeed(speed):
     pwm.write(EN_M1, 0, speed)
 
 
-def setup(busnum=None):
+def setup(busnum):
     global forward0, forward1, backward0, backward1, pwm
 
     if busnum == None:
@@ -41,43 +41,49 @@ def setup(busnum=None):
         pwm = p.PWM(bus_number=busnum)  # Initialize the servo controller.
 
     pwm.frequency = 60
-    forward0 = True
-    forward1 = False
+    forward0 = 'True'
+    forward1 = 'False'
+    
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)  # Number GPIOs by its physical location
+    
     try:
         for line in open("config"):
-            if line[0:8] == "forward0":
-                leftMotorDirection = True if line[11:-1] == "True" else False
-            if line[0:8] == "forward1":
-                rightMotorDirection = True if line[11:-1] == "True" else False
-                forward0 = line[11:-1]
-            if line[0:8] == "forward1":
-                forward1 = line[11:-1]
+            if line[0:8] == 'forward0':
+                if line[11:-1] == 'True':
+                    forward0 = 'True'
+                else:
+                    forward0 = 'False'
+            if line[0:8] == 'forward1':
+                if line[11:-1] == 'True':
+                    forward1 = 'True'
+                else:
+                    forward1 = 'False'
     except:
         pass
-    if forward0:
-        backward0 = False
-    else:
-        backward0 = True
-    if forward1:
-        backward1 = False
-    else:
-        backward1 = True
+
+ 
+    if forward0 == 'True':
+	    backward0 = 'False'
+    elif forward0 == 'False':
+	    backward0 = 'True'
+    if forward1 == 'True':
+	    backward1 = 'False'
+    elif forward1 == 'False':
+	    backward1 = 'True'
     for pin in pins:
         GPIO.setup(pin, GPIO.OUT)  # Set all pins' mode as output
-
-
+        
 # ===========================================================================
 # Control the DC motor to make it rotate clockwise, so the car will 
 # move forward.
 # ===========================================================================
 
 def left_motor(x):
-    if x:
+    if x == 'True':
         GPIO.output(Motor0_A, GPIO.HIGH)
         GPIO.output(Motor0_B, GPIO.LOW)
-    elif not x:
+    elif x == 'False':
         GPIO.output(Motor0_A, GPIO.LOW)
         GPIO.output(Motor0_B, GPIO.HIGH)
     else:
@@ -85,10 +91,10 @@ def left_motor(x):
 
 
 def right_motor(x):
-    if x:
+    if x == 'False':
         GPIO.output(Motor1_A, GPIO.LOW)
         GPIO.output(Motor1_B, GPIO.HIGH)
-    elif not x:
+    elif x == 'True':
         GPIO.output(Motor1_A, GPIO.HIGH)
         GPIO.output(Motor1_B, GPIO.LOW)
     else:
@@ -105,14 +111,14 @@ def backward():
     right_motor(backward1)
 
 
-def forwardWithSpeed(spd=50):
-    setSpeed(spd)
+def forwardWithSpeed(speed):
+    setSpeed(speed)
     left_motor(forward0)
     right_motor(forward1)
 
 
-def backwardWithSpeed(spd=50):
-    setSpeed(spd)
+def backwardWithSpeed(speed):
+    setSpeed(speed)
     left_motor(backward0)
     right_motor(backward1)
 
