@@ -1,5 +1,5 @@
-offset_x = 40
-offset_y = 0
-offset = -97
+# File based databases
+
+turning_offset = -22
 forward0 = True
 forward1 = True
