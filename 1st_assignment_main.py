@@ -45,9 +45,16 @@ import rear_wheels
 import front_wheels
 
 
+forward_speed = 30
+backward_speed = 30
+
+
+# =======================================================================
+# 1ST_ASSIGNMENT_CODE
+# Complete the code to perform first Assignment
+# =======================================================================
 def main():
-    while True:
-        rear_wheels.forwardWithSpeed(30)
+    pass:
 
 
 def moduleInitialize():
@@ -92,7 +99,7 @@ def moduleInitialize():
         # ================================================================
         # SET FRONT WHEEL CENTOR ALLIGNMENT
         # ================================================================
-        front_steering.turn_left()
+        front_steering.turn_straight()
 
 
         # ================================================================
@@ -108,11 +115,10 @@ def moduleInitialize():
 if __name__ == "__main__":
     try:
         moduleInitialize()
+        main()
 
     except KeyboardInterrupt:
         # when the Ctrl+C key has been pressed,
         # the moving object will be stopped
         rear_wheels.stop()
-
-    finally:
-        main()
+        front_steering.turn_straight()
