@@ -221,7 +221,7 @@ if __name__ == "__main__":
         FR.turning_max = 35
         
         # Front wheel Calibration
-        #setup()
+        setup()
         
         # RGB Module interrupt SETUP
         RM.set_interrupt(False)
