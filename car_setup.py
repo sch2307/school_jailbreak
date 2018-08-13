@@ -170,12 +170,14 @@ class Setup(QWidget):
     def left_reverse_clicked(self):
         self.db_data["forward0"] = not self.db_data["forward0"]
         self.save_button_clicked()
+        self.show_database()
         if self.is_run:
             self.run_button_clicked()
 
     def right_reverse_clicked(self):
         self.db_data["forward1"] = not self.db_data["forward1"]
         self.save_button_clicked()
+        self.show_database()
         if self.is_run:
             self.run_button_clicked()
 
