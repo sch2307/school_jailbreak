@@ -161,9 +161,17 @@ class Setup(QWidget):
         f.write("\n")
         temp = "turning_offset = " + str(self.db_data["turning_offset"]) + "\n"
         f.write(temp)
-        temp = "forward0 = " + "True" if self.db_data["forward0"] is True else "False" + "\n"
+        temp = "forward0 = "
+        if self.db_data["forward0"] is True:
+            temp += "True\n"
+        else:
+            temp += "False\n"
         f.write(temp)
-        temp = "forward1 = " + "True" if self.db_data["forward1"] is True else "False" + "\n"
+        temp = "forward1 = "
+        if self.db_data["forward1"] is True:
+            temp += "True\n"
+        else:
+            temp += "False\n"
         f.write(temp)
         f.close()
 
