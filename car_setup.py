@@ -7,6 +7,9 @@ class Setup(QWidget):
         super().__init__()
         self.config_file = open("./config", 'w')
         self.config_data = dict()
+        self.config_data["turning_offset"] = 0
+        self.config_data["forward0"] = "True"
+        self.config_data["forward1"] = "False"
         self.init_ui()
 
     def init_ui(self):
