@@ -54,7 +54,7 @@ delay = 0.0005
 
 def straight_run():
     while True:
-        rear_wheels.forwardWithSpeed(70)
+        rear_wheels.forward_with_speed(70)
         FR.turn_straight()
 
 
@@ -72,7 +72,7 @@ def lineFollwer_main():
     c_step = 30
     d_step = 45
     
-    rear_wheels.forwardWithSpeed(forward_speed)
+    rear_wheels.forward_with_speed(forward_speed)
 
     while True:
         # SR02-Ultrasonic avoidance
@@ -117,7 +117,7 @@ def lineFollwer_main():
             turning_angle = int(90 + step)
         elif lt_status_now == [0, 0, 0, 0, 0]:
             # rgb sensor check
-            rear_wheels.forwardWithSpeed(forward_speed)
+            rear_wheels.forward_with_speed(forward_speed)
             time.sleep(0.1)
             rear_wheels.stop()
             if LF.read_digital() == [0, 0, 0, 0, 0]:
@@ -143,16 +143,16 @@ def lineFollwer_main():
                 FR.turn(turning_angle)
                 time.sleep(0.1)
                 while sum(LF.read_digital()) <= 1:
-                    rear_wheels.backwardWithSpeed(backward_speed)
+                    rear_wheels.backward_with_speed(backward_speed)
                     time.sleep(0.1)
                 rear_wheels.stop()
                 turning_angle = store_angle
                 FR.turn(turning_angle)
                 time.sleep(0.1)
-                rear_wheels.forwardWithSpeed(forward_speed)
+                rear_wheels.forward_with_speed(forward_speed)
                 time.sleep(0.4)
             else:
-                rear_wheels.forwardWithSpeed(forward_speed)
+                rear_wheels.forward_with_speed(forward_speed)
                 print("color")
         else:
             off_track_count = 0
@@ -187,7 +187,7 @@ def cali():
 
 
 def destroy():
-    rear_wheels.pwm_low()
+    rear_wheels.stop()
     FR.turn(90)
 
 
