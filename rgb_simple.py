@@ -14,10 +14,10 @@ import smbus
 tcs = TCS34725_RGB.TCS34725()
 
 # You can also override the I2C device address and/or bus with parameters:
-#tcs = Adafruit_TCS34725.TCS34725(address=0x30, busnum=2)
+# tcs = Adafruit_TCS34725.TCS34725(address=0x30, busnum=2)
 
 # Or you can change the integration time and/or gain:
-#tcs = Adafruit_TCS34725.TCS34725(integration_time=Adafruit_TCS34725.TCS34725_INTEGRATIONTIME_700MS,
+# tcs = Adafruit_TCS34725.TCS34725(integration_time=Adafruit_TCS34725.TCS34725_INTEGRATIONTIME_700MS,
 #                                 gain=Adafruit_TCS34725.TCS34725_GAIN_60X)
 # Possible integration time values:
 #  - TCS34725_INTEGRATIONTIME_2_4MS  (2.4ms, default)
