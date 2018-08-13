@@ -10,8 +10,8 @@ class Setup(QWidget):
         self.is_run = False
         self.db_data = {}
         self.init_database()
-        self.init_ui()
         self.init_modules()
+        self.init_ui()
         self.show_database()
 
     def init_ui(self):
@@ -118,15 +118,26 @@ class Setup(QWidget):
         main_box.addLayout(config_box)
         main_box.addLayout(save_box)
 
-        # link run button in run_button function
+        # link run button in run_button_clicked function
         run_button.clicked.connect(lambda: self.run_button_clicked())
-        # link save button in save_button function 
+        
+        # link save button in save_button_clicked function 
         save_button.clicked.connect(lambda: self.save_button_clicked())
-        # link stop button in stop_button function
+        
+        # link stop button in stop_button_clicked function
         stop_button.clicked.connect(lambda: self.stop_button_clicked())
-        # link reverse button in left/right_reverse function
+        
+        # link reverse button in left/right_reverse_clicked function
         left_reverse.clicked.connect(lambda: self.left_reverse_clicked())
         right_reverse.clicked.connect(lambda: self.right_reverse_clicked())
+        
+        # link servo_left/right button in left/right_servo_clicked function 
+        servo_left.clicked.connect(lambda: self.left_servo_clicked())
+        servo_right.clicked.connect(lambda: self.right_servo_clicked())
+
+        # link servo_left/right_fine in left/right_accurate_servo_clicked function
+        servo_left_fine.clicked.connect(lambda: self.left_accurate_servo_clicked())
+        servo_right_fine.clicked.connect(lambda: self.right_accurate_servo_clicked())
 
         # Set window
         self.setLayout(main_box)
@@ -134,15 +145,16 @@ class Setup(QWidget):
         self.setWindowTitle("Car Setup")
         self.show()
 
-
     def init_modules(self):
         # front_wheels PWM Driver Initialize
+        global fr_wheels
         fr_wheels = front_wheels.Front_Wheels(db='config')
         fr_wheels.ready()
+        fr_wheels.calibration()
 
         # rear_wheels PWM Driver Initialize
+        global rear_wheels
         rear_wheels.setup(1)
-
 
     def init_database(self):
         self.db_data["turning_offset"] = -22
@@ -207,6 +219,31 @@ class Setup(QWidget):
     def stop_button_clicked(self):
         self.is_run = False
         rear_wheels.stop()
+
+    def left_servo_clicked(self):
+        fr_wheels.cali_left()
+        self.db_data["turning_offset"] = fr_wheels.return_cali_offset()
+        self.save_button_clicked()
+        self.show_database()
+
+    def right_servo_clicked(self):
+        fr_wheels.cali_right()
+        self.db_data["turning_offset"] = fr_wheels.return_cali_offset()
+        self.save_button_clicked()
+        self.show_database()
+
+    def left_accurate_servo_clicked(self):
+        fr_wheels.cali_accurate_left()
+        self.db_data["turning_offset"] = fr_wheels.return_cali_offset()
+        self.save_button_clicked()
+        self.show_database()
+
+    def right_accurate_servo_clicked(self):
+        fr_wheels.cali_accurate_right()
+        self.db_data["turning_offset"] = fr_wheels.return_cali_offset()
+        self.save_button_clicked()
+        self.show_database()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

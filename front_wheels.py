@@ -127,17 +127,28 @@ class Front_Wheels(object):
 
     def cali_left(self):
         """ Calibrate the wheels to left """
-        self.cali_turning_offset -= 1
+        self.cali_turning_offset -= 10
         self.wheel.offset = self.cali_turning_offset
         self.turn_straight()
 
     def cali_right(self):
         """ Calibrate the wheels to right """
+        self.cali_turning_offset += 10
+        self.wheel.offset = self.cali_turning_offset
+        self.turn_straight()
+        
+    def cali_accurate_left(self):
+        """ Accurate Calibrate the wheels to left """
+        self.cali_turning_offset -= 1
+        self.wheel.offset = self.cali_turning_offset
+        self.turn_straight()
+
+    def cali_accurate_right(self):
+        """ Accurate Calibrate the wheels to right """
         self.cali_turning_offset += 1
         self.wheel.offset = self.cali_turning_offset
         self.turn_straight()
 
-    def cali_ok(self):
-        """ Save the calibration value """
-        self.turning_offset = self.cali_turning_offset
-        self.db.set('turning_offset', self.turning_offset)
+    def return_cali_offset(self):
+        """ Return the calibration value """
+        return self.cali_turning_offset
