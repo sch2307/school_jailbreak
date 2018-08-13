@@ -27,12 +27,12 @@ class PWM(object):
     _OUTDRV = 0x04
 
     RPI_REVISION_0 = ["900092"]
-    RPI_REVISION_1_MODULE_B  = ["Beta", "0002", "0003", "0004", "0005", "0006", "000d", "000e", "000f"]
-    RPI_REVISION_1_MODULE_A  = ["0007", "0008", "0009",]
+    RPI_REVISION_1_MODULE_B = ["Beta", "0002", "0003", "0004", "0005", "0006", "000d", "000e", "000f"]
+    RPI_REVISION_1_MODULE_A = ["0007", "0008", "0009",]
     RPI_REVISION_1_MODULE_BP = ["0010", "0013"]
     RPI_REVISION_1_MODULE_AP = ["0012"]
-    RPI_REVISION_2_MODULE_B  = ["a01041", "a21041"]
-    RPI_REVISION_3_MODULE_B  = ["a02082", "a22082"]
+    RPI_REVISION_2_MODULE_B = ["a01041", "a21041"]
+    RPI_REVISION_3_MODULE_B = ["a02082", "a22082"]
     RPI_REVISION_3_MODULE_BP = ["a020d3"]
 
     _DEBUG = False
@@ -173,10 +173,12 @@ class PWM(object):
             for address in addresses:
                 print("  0x%s" % address)
         if "%02X" % self.address in addresses:
-            print("Wierd, I2C device is connected, Try to run the program again, If problem stills, email this information to support@sunfounder.com")
+            print("Wierd, I2C device is connected, Try to run the program again, "
+                  "If problem stills, email this information to support@sunfounder.com")
         else:
             print("Device is missing.")
-            print("Check the address or wiring of PCA9685 Server driver, or email this information to support@sunfounder.com")
+            print("Check the address or wiring of PCA9685 Server driver, "
+                  "or email this information to support@sunfounder.com")
         raise IOError('IO error')
 
     @property
