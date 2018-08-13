@@ -135,13 +135,13 @@ class Setup(QWidget):
         self.show()
 
     def init_database(self):
-        self.db_data["turning_offset"] = 0
+        self.db_data["turning_offset"] = -22
         self.db_data["forward0"] = True
         self.db_data["forward1"] = False
         f = open("./config", 'w')
         f.write("# File based database.\n")
         f.write("\n")
-        f.write("turning_offset = 0\n")
+        f.write("turning_offset = -22\n")
         f.write("forward0 = True\n")
         f.write("forward1 = False\n")
         f.close()
