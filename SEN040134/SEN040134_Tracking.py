@@ -1,8 +1,8 @@
 #########################################################################
-### Date: 2018/07/12
-### file name: trackingModule.py
-### Purpose: this code has been generated for the five-way tracking sensor
-###         to perform the decision of direction
+# Date: 2018/07/12
+# file name: trackingModule.py
+# Purpose: this code has been generated for the five-way tracking sensor
+#          to perform the decision of direction
 #########################################################################
 
 # =======================================================================
@@ -10,6 +10,7 @@
 # =======================================================================
 import RPi.GPIO as GPIO
 import time
+
 
 class SEN040134_Tracking(object):
     # =======================================================================
@@ -24,8 +25,8 @@ class SEN040134_Tracking(object):
         GPIO.setmode(GPIO.BOARD)
 
         # =======================================================================
-        # because the connetions between 5-way tracking sensor and Rapberry Pi has been
-        # established, the GPIO pins of Rapberry Pi
+        # because the connections between 5-way tracking sensor and Raspberry Pi has been
+        # established, the GPIO pins of Raspberry Pi
         # such as leftmostled, leftlessled, centerled, rightlessled, and rightmostled
         # should be clearly declared whether their roles of pins
         # are output pin or input pin
@@ -71,7 +72,6 @@ class SEN040134_Tracking(object):
             digital_list.append(0 if temp == 1 else 1)
         return digital_list
 
-
     def found_line_in(self, timeout):
         if isinstance(timeout, int) or isinstance(timeout, float):
             pass
@@ -88,13 +88,11 @@ class SEN040134_Tracking(object):
             time_during = time_now - time_start
         return False
 
-
     def wait_tile_status(self, status):
         while True:
             lt_status = self.read_digital()
             if lt_status in status:
                 break
-
 
     def wait_tile_center(self):
         while True:
