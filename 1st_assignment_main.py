@@ -13,36 +13,31 @@
 import RPi.GPIO as GPIO
 import time
 
-
-# =======================================================================
-#  set GPIO warnings as false
-# =======================================================================
-GPIO.setwarnings(False)
-
-
 # =======================================================================
 # import ALL method in the SEN040134 Tracking Module
 # =======================================================================
 from SEN040134 import SEN040134_Tracking as Tracking_Sensor
-
 
 # =======================================================================
 # import ALL method in the TCS34725 RGB Module
 # =======================================================================
 from TCS34725 import TCS34725_RGB as RGB_Sensor
 
-
 # =======================================================================
 # import ALL method in the SR02 Ultrasonic Module
 # =======================================================================
 from SR02 import SR02_Ultrasonic as Ultrasonic_Sensor
-
 
 # =======================================================================
 # import ALL method in the rear/front Motor Module
 # =======================================================================
 import rear_wheels
 import front_wheels
+
+# =======================================================================
+#  set GPIO warnings as false
+# =======================================================================
+GPIO.setwarnings(False)
 
 
 forward_speed = 30
@@ -54,7 +49,7 @@ backward_speed = 30
 # Complete the code to perform first Assignment
 # =======================================================================
 def main():
-    #Implement the assignment code here.
+    # Implement the assignment code here.
     pass
 
 
@@ -65,18 +60,15 @@ def moduleInitialize():
         # ================================================================
         distance_detector = Ultrasonic_Sensor.Ultrasonic_Avoidance(35)
 
-
         # ================================================================
         # TRACKING MODULE DRIVER INITIALIZE
         # ================================================================
         line_detector = Tracking_Sensor.SEN040134_Tracking([16, 18, 22, 40, 32])
 
-
         # ================================================================
         # RGB MODULE DRIVER INITIALIZE
         # ================================================================
         color_getter = RGB_Sensor.TCS34725()
-
 
         # ================================================================
         # FRONT WHEEL DRIVER SETUP
@@ -84,24 +76,20 @@ def moduleInitialize():
         front_steering = front_wheels.Front_Wheels(db='config')
         front_steering.ready()
 
-
         # ================================================================
         # REAR WHEEL DRIVER SETUP
         # ================================================================
         rear_wheels.setup(1)
-
 
         # ================================================================
         # SET LIMIT OF TURNING DEGREE
         # ================================================================
         front_steering.turning_max = 35
 
-
         # ================================================================
         # SET FRONT WHEEL CENTOR ALLIGNMENT
         # ================================================================
         front_steering.turn_straight()
-
 
         # ================================================================
         # DISABLE RGB MODULE INTERRUPTION
@@ -109,7 +97,7 @@ def moduleInitialize():
         color_getter.set_interrupt(False)
 
     except:
-        print("MODULE INITALIZE ERROR")
+        print("MODULE INITIALIZE ERROR")
         print("CONTACT TO Kookmin Univ. Teaching Assistant")
 
 
