@@ -1,9 +1,8 @@
-#!/usr/bin/env python
 import RPi.GPIO as GPIO
 from PCA9685 import PCA9685 as p
 
 # ===========================================================================
-# Raspberry Pi pin11, 12, 13 and 15 to realize the clockwise/counterclockwise
+# Raspberry Pi pin 11, 12, 13 and 15 to realize the clockwise/counterclockwise
 # rotation and forward and backward movements
 # ===========================================================================
 Motor0_A = 11  # GPIO 17
@@ -27,7 +26,7 @@ pins = [Motor0_A, Motor0_B, Motor1_A, Motor1_B]
 # ===========================================================================
 def set_speed(speed):
     speed *= 40
-    print('speed is: ', speed)
+    print('speed is: ', (speed / 40))
     pwm.write(EN_M0, 0, speed)
     pwm.write(EN_M1, 0, speed)
 
@@ -55,8 +54,8 @@ def setup(busnum):
             if line[0:8] == 'forward1':
                 forward1 = True if line[11:-1] == 'True' else False
 
-    except IOError:
-        pass
+    except IOError as e:
+        print(e)
 
     backward0 = not forward0
     backward1 = not forward1
@@ -71,22 +70,22 @@ def setup(busnum):
 # ===========================================================================
 
 
-def left_motor(x):
-    if x:
+def left_motor(set_direction):
+    if set_direction:
         GPIO.output(Motor0_A, GPIO.HIGH)
         GPIO.output(Motor0_B, GPIO.LOW)
-    elif not x:
+    elif not set_direction:
         GPIO.output(Motor0_A, GPIO.LOW)
         GPIO.output(Motor0_B, GPIO.HIGH)
     else:
         print('Config Error')
 
 
-def right_motor(x):
-    if x:
+def right_motor(set_direction):
+    if set_direction:
         GPIO.output(Motor1_A, GPIO.LOW)
         GPIO.output(Motor1_B, GPIO.HIGH)
-    elif not x:
+    elif not set_direction:
         GPIO.output(Motor1_A, GPIO.HIGH)
         GPIO.output(Motor1_B, GPIO.LOW)
     else:
@@ -118,22 +117,3 @@ def backward_with_speed(speed):
 def stop():
     for pin in pins:
         GPIO.output(pin, GPIO.LOW)
-
-
-# ===========================================================================
-# The first parameter(status) is to control the state of the car, to make it
-# stop or run. The parameter(direction) is to control the car's direction
-# (move forward or backward).
-# ===========================================================================
-def ctrl(status, direction=1):
-    if status == 1:  # Run
-        if direction == 1:  # Forward
-            forward()
-        elif direction == -1:  # Backward
-            backward()
-        else:
-            print('Argument error! direction must be 1 or -1.')
-    elif status == 0:  # Stop
-        stop()
-    else:
-        print('Argument error! status must be 0 or 1.')
