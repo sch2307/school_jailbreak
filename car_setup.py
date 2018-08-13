@@ -1,16 +1,14 @@
 import sys
 from PyQt5.QtWidgets import *
+import rear_wheels
 
 
 class Setup(QWidget):
     def __init__(self):
         super().__init__()
-        self.config_file = open("./config", 'w')
-        self.config_data = dict()
-        self.config_data["turning_offset"] = 0
-        self.config_data["forward0"] = "True"
-        self.config_data["forward1"] = "False"
+        self.init_database()
         self.init_ui()
+        self.show_database()
 
     def init_ui(self):
         # 서보모터 컨트롤 버튼
@@ -63,11 +61,11 @@ class Setup(QWidget):
         servo_box.addLayout(servo_fine_control_box)
 
         # 텍스트 출력 레이아웃 구성
-        config_text = QTextEdit()
-        config_text.setReadOnly(True)
+        self.config_text = QTextEdit()
+        self.config_text.setReadOnly(True)
         config_box = QHBoxLayout()
         # config_box.addStretch(1)
-        config_box.addWidget(config_text)
+        config_box.addWidget(self.config_text)
         # config_box.addStretch(1)
 
         # 모터 컨트롤 버튼
@@ -118,10 +116,49 @@ class Setup(QWidget):
         main_box.addLayout(config_box)
         main_box.addLayout(save_box)
 
+        # Run 버튼 함수 연결
+        run_button.clicked.connect(lambda: self.run_button_clicked())
+        # Save 버튼 함수 연결
+        save_button.clicked.connect(lambda: self.save_button_clicked())
+        # Stop 버튼 함수 연결
+        stop_button.clicked.connect(lambda: self.stop_button_clicked())
+
+        # 창 설정
         self.setLayout(main_box)
         self.setGeometry(300, 300, 500, 400)
         self.setWindowTitle("Car Setup")
         self.show()
+
+    def init_database(self):
+        f = open("./config", 'w')
+        f.write("# File based database.\n")
+        f.write("\n")
+        f.write("turning_offset = 0\n")
+        f.write("forward0 = True\n")
+        f.write("forward1 = False\n")
+        f.close()
+
+    def show_database(self):
+        f = open("./config", 'r')
+        print_text = ""
+        for line in f:
+            print(line)
+            print_text += line
+            # print_text += "\n"
+        f.close()
+        self.config_text.setText(print_text)
+
+    def save_button_clicked(self):
+        f = open("./config", 'a')
+        # TODO
+        # add file save algorithm
+
+    def run_button_clicked(self):
+        rear_wheels.setup(1)
+        rear_wheels.forwardWithSpeed(50)
+
+    def stop_button_clicked(self):
+        rear_wheels.stop()
 
 
 if __name__ == "__main__":
