@@ -23,7 +23,7 @@ import logging
 import os
 import subprocess
 
-import Platform
+from TCS34725 import Platform
 
 
 def reverseByteOrder(data):

@@ -88,7 +88,7 @@ class PWM(object):
                         print("Error. Pi revision didn't recognize, module number: %s" % line[11:-1])
                         print('Exiting...')
                         quit()
-        except Exception, e:
+        except Exception as e:
             f.close()
             print(e)
             print('Exiting...')
@@ -125,7 +125,7 @@ class PWM(object):
             print(self._DEBUG_INFO, 'Writing value %2X to %2X' % (value, reg))
         try:
             self.bus.write_byte_data(self.address, reg, value)
-        except Exception, i:
+        except Exception as i:
             print(i)
             self._check_i2c()
 
@@ -136,7 +136,7 @@ class PWM(object):
         try:
             results = self.bus.read_byte_data(self.address, reg)
             return results
-        except Exception, i:
+        except Exception as i:
             print(i)
             self._check_i2c()
 
@@ -148,8 +148,8 @@ class PWM(object):
         print("Checking I2C device:")
         cmd = "ls /dev/i2c-%d" % bus_number
         output = commands.getoutput(cmd)
-        print 'Commands "%s" output:' % cmd
-        print output
+        print ("Commands %s output:" % cmd)
+        print (output)
         if '/dev/i2c-%d' % bus_number in output.split(' '):
             print("I2C device setup OK")
         else:

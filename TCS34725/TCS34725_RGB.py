@@ -135,8 +135,7 @@ class TCS34725(object):
         """Initialize the TCS34725 sensor."""
         # Setup I2C interface for the device.
         if i2c is None:
-            import I2C as I2C
-            i2c = I2C
+            from TCS34725 import I2C as i2c
         self._device = i2c.get_i2c_device(address, **kwargs)
         # Make sure we're connected to the sensor.
         chip_id = self._readU8(TCS34725_ID)
