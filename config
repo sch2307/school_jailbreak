@@ -1,5 +1,5 @@
-# File based databases
+# File based database.
 
-turning_offset = -22
+turning_offset = 0
 forward0 = True
-forward1 = True
+forward1 = False
