@@ -54,7 +54,8 @@ backward_speed = 30
 # Complete the code to perform first Assignment
 # =======================================================================
 def main():
-    pass:
+    #Implement the assignment code here.
+    pass
 
 
 def moduleInitialize():
