@@ -6,9 +6,11 @@ import rear_wheels
 class Setup(QWidget):
     def __init__(self):
         super().__init__()
+        self.is_run = False
         self.init_database()
         self.init_ui()
         self.show_database()
+        self.db_data = dict()
 
     def init_ui(self):
         # 서보모터 컨트롤 버튼
@@ -122,6 +124,9 @@ class Setup(QWidget):
         save_button.clicked.connect(lambda: self.save_button_clicked())
         # Stop 버튼 함수 연결
         stop_button.clicked.connect(lambda: self.stop_button_clicked())
+        # Reverse 버튼 함수 연결
+        left_reverse.clicked.connect(lambda: self.left_reverse_clicked())
+        right_reverse.clicked.connect(lambda: self.right_reverse_clicked())
 
         # 창 설정
         self.setLayout(main_box)
@@ -130,6 +135,9 @@ class Setup(QWidget):
         self.show()
 
     def init_database(self):
+        self.db_data["turning_offset"] = 0
+        self.db_data["forward0"] = True
+        self.db_data["forward1"] = False
         f = open("./config", 'w')
         f.write("# File based database.\n")
         f.write("\n")
@@ -142,22 +150,42 @@ class Setup(QWidget):
         f = open("./config", 'r')
         print_text = ""
         for line in f:
-            print(line)
             print_text += line
             # print_text += "\n"
         f.close()
         self.config_text.setText(print_text)
 
     def save_button_clicked(self):
-        f = open("./config", 'a')
-        # TODO
-        # add file save algorithm
+        f = open("./config", 'w')
+        f.write("# File based database.\n")
+        f.write("\n")
+        temp = "turning_offset = " + self.db_data["turning_offset"] + "\n"
+        f.write(temp)
+        temp = "forward0 = " + "True" if self.db_data["forward0"] is True else "False" + "\n"
+        f.write(temp)
+        temp = "forward1 = " + "True" if self.db_data["forward1"] is True else "False" + "\n"
+        f.write(temp)
+        f.close()
+
+    def left_reverse_clicked(self):
+        self.db_data["forward0"] = not self.db_data["forward0"]
+        self.save_button_clicked()
+        if self.is_run:
+            self.run_button_clicked()
+
+    def right_reverse_clicked(self):
+        self.db_data["forward1"] = not self.db_data["forward1"]
+        self.save_button_clicked()
+        if self.is_run:
+            self.run_button_clicked()
 
     def run_button_clicked(self):
+        self.is_run = True
         rear_wheels.setup(1)
-        rear_wheels.forwardWithSpeed(50)
+        rear_wheels.forwardWithSpeed(40)
 
     def stop_button_clicked(self):
+        self.is_run = False
         rear_wheels.stop()
 
 
