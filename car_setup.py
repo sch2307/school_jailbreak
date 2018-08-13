@@ -1,5 +1,6 @@
 import sys
 from PyQt5.QtWidgets import *
+import front_wheels
 import rear_wheels
 
 
