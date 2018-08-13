@@ -132,12 +132,12 @@ class Setup(QWidget):
         right_reverse.clicked.connect(lambda: self.right_reverse_clicked())
         
         # link servo_left/right button in left/right_servo_clicked function 
-        servo_left.clicked.connect(lambda: self.left_servo_clicked())
-        servo_right.clicked.connect(lambda: self.right_servo_clicked())
+        servo_left.clicked.connect(lambda: self.servo_clicked("left"))
+        servo_right.clicked.connect(lambda: self.servo_clicked("right"))
 
-        # link servo_left/right_fine in left/right_accurate_servo_clicked function
-        servo_left_fine.clicked.connect(lambda: self.left_accurate_servo_clicked())
-        servo_right_fine.clicked.connect(lambda: self.right_accurate_servo_clicked())
+        # link servo_left/right_fine in servo_clicked function
+        servo_left_fine.clicked.connect(lambda: self.servo_clicked("a_left"))
+        servo_right_fine.clicked.connect(lambda: self.servo_clicked("a_right"))
 
         # Set window
         self.setLayout(main_box)
@@ -220,26 +220,15 @@ class Setup(QWidget):
         self.is_run = False
         rear_wheels.stop()
 
-    def left_servo_clicked(self):
-        fr_wheels.cali_left()
-        self.db_data["turning_offset"] = fr_wheels.return_cali_offset()
-        self.save_button_clicked()
-        self.show_database()
-
-    def right_servo_clicked(self):
-        fr_wheels.cali_right()
-        self.db_data["turning_offset"] = fr_wheels.return_cali_offset()
-        self.save_button_clicked()
-        self.show_database()
-
-    def left_accurate_servo_clicked(self):
-        fr_wheels.cali_accurate_left()
-        self.db_data["turning_offset"] = fr_wheels.return_cali_offset()
-        self.save_button_clicked()
-        self.show_database()
-
-    def right_accurate_servo_clicked(self):
-        fr_wheels.cali_accurate_right()
+    def servo_clicked(self, action):
+        if action is "left":
+            fr_wheels.cali_left()
+        elif action is "right":
+            fr_wheels.cali_right()
+        elif action is "a_left":
+            fr_wheels.cali_accurate_left()
+        elif action is "a_right":
+            fr_wheels.cali_accurate_right()
         self.db_data["turning_offset"] = fr_wheels.return_cali_offset()
         self.save_button_clicked()
         self.show_database()
