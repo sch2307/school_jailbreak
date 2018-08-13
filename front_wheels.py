@@ -4,14 +4,14 @@ import filedb
 
 
 class Front_Wheels(object):
-    ''' Front wheels control class '''
+    """ Front wheels control class """
     FRONT_WHEEL_CHANNEL = 0
 
     _DEBUG = False
     _DEBUG_INFO = 'DEBUG "front_wheels.py":'
 
     def __init__(self, debug=False, db="config", bus_number=1, channel=FRONT_WHEEL_CHANNEL):
-        ''' setup channels and basic stuff '''
+        """ setup channels and basic stuff """
         self.db = filedb.fileDB(db=db)
         self._channel = channel
         self._straight_angle = 90
@@ -31,25 +31,25 @@ class Front_Wheels(object):
             self._angle["left"], self._angle["straight"], self._angle["right"]))
 
     def turn_left(self):
-        ''' Turn the front wheels left '''
+        """ Turn the front wheels left """
         if self._DEBUG:
             print(self._DEBUG_INFO, "Turn left")
         self.wheel.write(self._angle["left"])
 
     def turn_straight(self):
-        ''' Turn the front wheels back straight '''
+        """ Turn the front wheels back straight """
         if self._DEBUG:
             print(self._DEBUG_INFO, "Turn straight")
         self.wheel.write(self._angle["straight"])
 
     def turn_right(self):
-        ''' Turn the front wheels right '''
+        """ Turn the front wheels right """
         if self._DEBUG:
             print(self._DEBUG_INFO, "Turn right")
         self.wheel.write(self._angle["right"])
 
     def turn(self, angle):
-        ''' Turn the front wheels to the giving angle '''
+        """ Turn the front wheels to the giving angle """
         if self._DEBUG:
             print(self._DEBUG_INFO, "Turn to", angle)
         if angle < self._angle["left"]:
@@ -96,7 +96,7 @@ class Front_Wheels(object):
 
     @debug.setter
     def debug(self, debug):
-        ''' Set if debug information shows '''
+        """ Set if debug information shows """
         if debug in (True, False):
             self._DEBUG = debug
         else:
@@ -112,32 +112,32 @@ class Front_Wheels(object):
             self.wheel.debug = False
 
     def ready(self):
-        ''' Get the front wheels to the ready position. '''
+        """ Get the front wheels to the ready position. """
         if self._DEBUG:
             print(self._DEBUG_INFO, 'Turn to "Ready" position')
         self.wheel.offset = self.turning_offset
         self.turn_straight()
 
     def calibration(self):
-        ''' Get the front wheels to the calibration position. '''
+        """ Get the front wheels to the calibration position. """
         if self._DEBUG:
             print(self._DEBUG_INFO, 'Turn to "Calibration" position')
         self.turn_straight()
         self.cali_turning_offset = self.turning_offset
 
     def cali_left(self):
-        ''' Calibrate the wheels to left '''
+        """ Calibrate the wheels to left """
         self.cali_turning_offset -= 1
         self.wheel.offset = self.cali_turning_offset
         self.turn_straight()
 
     def cali_right(self):
-        ''' Calibrate the wheels to right '''
+        """ Calibrate the wheels to right """
         self.cali_turning_offset += 1
         self.wheel.offset = self.cali_turning_offset
         self.turn_straight()
 
     def cali_ok(self):
-        ''' Save the calibration value '''
+        """ Save the calibration value """
         self.turning_offset = self.cali_turning_offset
         self.db.set('turning_offset', self.turning_offset)
