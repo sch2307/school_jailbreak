@@ -1,30 +1,22 @@
 ######################################################################
-### Date: 2018/07/12
-### file name: project_main.py
-### Purpose: this code has been generated for the 4WD moving
-###         object to perform the project with ultra sensor
-### this code is used for the student only
+# Date: 2018/07/12
+# file name: project_main.py
+# Purpose: this code has been generated for the 4WD moving
+#         object to perform the project with ultra sensor
+# this code is used for the student only
 ######################################################################
 
 
 # =======================================================================
-# import GPIO library and time module 
+# import GPIO library and time module
 # =======================================================================
 import RPi.GPIO as GPIO
 import time
-
-
-# =======================================================================
-#  set GPIO warnings as false 
-# =======================================================================
-GPIO.setwarnings(False)
-
 
 # =======================================================================
 # import ALL method in the SEN040134 Tracking Module
 # =======================================================================
 from SEN040134 import SEN040134_Tracking
-
 
 # =======================================================================
 # import ALL method in the TCS34725 RGB Module
@@ -36,13 +28,16 @@ from TCS34725 import TCS34725_RGB
 # =======================================================================
 from SR02 import SR02_Ultrasonic
 
-
 # =======================================================================
-# import ALL method in the rear/front Motor Module 
+# import ALL method in the rear/front Motor Module
 # =======================================================================
 import rear_wheels
 import front_wheels
 
+# =======================================================================
+#  set GPIO warnings as false
+# =======================================================================
+GPIO.setwarnings(False)
 
 # =======================================================================    
 # setup and initilaize the left motor and right motor
@@ -80,14 +75,14 @@ def lineFollwer_main():
     rear_wheels.forwardWithSpeed(forward_speed)
 
     while True:
-        #SR02-Ultrasonic avoidance
+        # SR02-Ultrasonic avoidance
         uDistance = UA.get_distance()
-        if uDistance >= 0 and uDistance <= 2:
+        if 0 <= uDistance <= 2:
             print("DISTANCE", uDistance)
             rear_wheels.stop()
             break
 
-        #TCS34725-RGB Module
+        # TCS34725-RGB Module
         cr, cg, cb, clr = RM.get_raw_data()
         lux = TCS34725_RGB.calculate_lux(cr, cg, cb)
         print(" RED : ", cr, " GREEN : ", cg, " BLUE : ", cb, " LUX : ", lux)
@@ -126,9 +121,9 @@ def lineFollwer_main():
             time.sleep(0.1)
             rear_wheels.stop()
             if LF.read_digital() == [0, 0, 0, 0, 0]:
-                #off_track_count += 1
-                #if off_track_count > max_off_track_count:
-                    ##tmp_angle = -(turning_angle - 90) + 90
+                # off_track_count += 1
+                # if off_track_count > max_off_track_count:
+                #    tmp_angle = -(turning_angle - 90) + 90
                 #    tmp_angle = (turning_angle - 90) / abs(90 - turning_angle)
                 #    tmp_angle *= FR.turning_max
                 #    rear_wheels.backwardWithSpeed(backward_speed)
@@ -190,6 +185,7 @@ def cali():
     FR.turn(90)
     time.sleep(1)
 
+
 def destroy():
     rear_wheels.pwm_low()
     FR.turn(90)
@@ -198,7 +194,7 @@ def destroy():
 if __name__ == "__main__":
     try:
         # =======================================================================    
-        # setup and initilaize the left motor and right motor
+        # setup and initialize the left motor and right motor
         # =======================================================================
 
         # ULTRASONIC MODULE DRIVER INITIALIZE
