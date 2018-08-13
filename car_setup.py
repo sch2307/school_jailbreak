@@ -10,7 +10,7 @@ class Setup(QWidget):
         self.init_database()
         self.init_ui()
         self.show_database()
-        self.db_data = dict()
+        self.db_data = {}
 
     def init_ui(self):
         # 서보모터 컨트롤 버튼
@@ -159,7 +159,7 @@ class Setup(QWidget):
         f = open("./config", 'w')
         f.write("# File based database.\n")
         f.write("\n")
-        temp = "turning_offset = " + self.db_data["turning_offset"] + "\n"
+        temp = "turning_offset = " + str(self.db_data["turning_offset"]) + "\n"
         f.write(temp)
         temp = "forward0 = " + "True" if self.db_data["forward0"] is True else "False" + "\n"
         f.write(temp)
