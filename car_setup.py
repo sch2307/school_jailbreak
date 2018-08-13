@@ -7,10 +7,10 @@ class Setup(QWidget):
     def __init__(self):
         super().__init__()
         self.is_run = False
+        self.db_data = {}
         self.init_database()
         self.init_ui()
         self.show_database()
-        self.db_data = {}
 
     def init_ui(self):
         # 서보모터 컨트롤 버튼
