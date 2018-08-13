@@ -10,6 +10,7 @@ class Setup(QWidget):
         self.db_data = {}
         self.init_database()
         self.init_ui()
+        self.init_modules()
         self.show_database()
 
     def init_ui(self):
@@ -134,6 +135,16 @@ class Setup(QWidget):
         self.setWindowTitle("Car Setup")
         self.show()
 
+
+    def init_modules(self):
+        # front_wheels PWM Driver Initialize
+        fr_wheels = front_wheels.Front_Wheels(db='config')
+        fr_wheels.ready()
+
+        # rear_wheels PWM Driver Initialize
+        rear_wheels.setup(1)
+
+
     def init_database(self):
         self.db_data["turning_offset"] = -22
         self.db_data["forward0"] = True
@@ -191,13 +202,12 @@ class Setup(QWidget):
 
     def run_button_clicked(self):
         self.is_run = True
-        rear_wheels.setup(1)
+        self.init_modules()
         rear_wheels.forward_with_speed(40)
 
     def stop_button_clicked(self):
         self.is_run = False
         rear_wheels.stop()
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
