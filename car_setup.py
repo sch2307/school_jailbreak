@@ -192,7 +192,7 @@ class Setup(QWidget):
     def run_button_clicked(self):
         self.is_run = True
         rear_wheels.setup(1)
-        rear_wheels.forwardWithSpeed(40)
+        rear_wheels.forward_with_speed(40)
 
     def stop_button_clicked(self):
         self.is_run = False
