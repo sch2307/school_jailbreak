@@ -22,10 +22,11 @@ import platform
 import re
 
 # Platform identification constants.
-UNKNOWN          = 0
-RASPBERRY_PI     = 1
+UNKNOWN = 0
+RASPBERRY_PI = 1
 BEAGLEBONE_BLACK = 2
-MINNOWBOARD      = 3
+MINNOWBOARD = 3
+
 
 def platform_detect():
     """Detect if running on the Raspberry Pi or Beaglebone Black and return the
@@ -50,7 +51,7 @@ def platform_detect():
     # Assumption is that mraa is installed
     try: 
         import mraa 
-        if mraa.getPlatformName()=='MinnowBoard MAX':
+        if mraa.getPlatformName() == 'MinnowBoard MAX':
             return MINNOWBOARD
     except ImportError:
         pass
@@ -66,7 +67,7 @@ def pi_revision():
     with open('/proc/cpuinfo', 'r') as infile:
         for line in infile:
             # Match a line of the form "Revision : 0002" while ignoring extra
-            # info in front of the revsion (like 1000 when the Pi was over-volted).
+            # info in front of the revision (like 1000 when the Pi was over-volted).
             match = re.match('Revision\s+:\s+.*(\w{4})$', line, flags=re.IGNORECASE)
             if match and match.group(1) in ['0000', '0002', '0003']:
                 # Return revision 1 if revision ends with 0000, 0002 or 0003.

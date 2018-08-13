@@ -96,6 +96,7 @@ INTEGRATION_TIME_DELAY = {
     0x00: 0.700  # 700ms - 256 cycles - Max Count: 65535
 }
 
+
 # Utility methods:
 def calculate_color_temperature(r, g, b):
     """Converts the raw R/G/B values to color temperature in degrees Kelvin."""
@@ -220,7 +221,7 @@ class TCS34725(object):
         c = self._readU16LE(TCS34725_CDATAL)
         # Delay for the integration time to allow for next reading immediately.
         time.sleep(INTEGRATION_TIME_DELAY[self._integration_time])
-        return (r, g, b, c)
+        return r, g, b, c
 
     def set_interrupt(self, enabled):
         """Enable or disable interrupts by setting enabled to True or False."""
