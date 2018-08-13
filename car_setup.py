@@ -15,17 +15,17 @@ class Setup(QWidget):
         self.show_database()
 
     def init_ui(self):
-        # 서보모터 컨트롤 버튼
+        # Servo motor control button
         servo_left = QPushButton("<<")
         servo_right = QPushButton(">>")
-        control_message = QLabel("서보 컨트롤")
+        control_message = QLabel("Servo motor Control Menu")
 
-        # 서보모터 미세 컨트롤 버튼
+        # Servo motor accurate control button
         servo_left_fine = QPushButton(" < ")
         servo_right_fine = QPushButton(" > ")
-        control_message_fine = QLabel("미세한 서보 컨트롤")
+        control_message_fine = QLabel("Servo motor Accurate Control Menu")
 
-        # 서보모터 컨트롤 레이아웃 구성
+        # Set servo motor control button layout
         servo_button_box = QHBoxLayout()
         servo_button_box.addStretch(1)
         servo_button_box.addWidget(servo_left)
@@ -42,7 +42,7 @@ class Setup(QWidget):
         servo_control_box.addLayout(message_box)
         servo_control_box.addLayout(servo_button_box)
 
-        # 서보모터 미세 컨트롤 레이아웃 구성
+        # Set servo motor accurate control button layout
         fine_message_box = QHBoxLayout()
         fine_message_box.addStretch(1)
         fine_message_box.addWidget(control_message_fine)
@@ -59,21 +59,19 @@ class Setup(QWidget):
         servo_fine_control_box.addLayout(fine_message_box)
         servo_fine_control_box.addLayout(servo_button_box_fine)
 
-        # 서보모터 컨트롤 전체 레이아웃 구성
+        # Set servo motor control layout
         servo_box = QVBoxLayout()
         servo_box.addLayout(servo_control_box)
         servo_box.addLayout(servo_fine_control_box)
 
-        # 텍스트 출력 레이아웃 구성
+        # Set text print box layout
         self.config_text = QTextEdit()
         self.config_text.setReadOnly(True)
         config_box = QHBoxLayout()
-        # config_box.addStretch(1)
         config_box.addWidget(self.config_text)
-        # config_box.addStretch(1)
 
-        # 모터 컨트롤 버튼
-        motor_message = QLabel("모터 컨트롤")
+        # motor control button
+        motor_message = QLabel("Rear Motor Control Menu")
         left_message = QLabel("Left")
         right_message = QLabel("Right")
         drive_message = QLabel("Drive")
@@ -82,7 +80,7 @@ class Setup(QWidget):
         run_button = QPushButton("Run")
         stop_button = QPushButton("Stop")
 
-        # 모터 컨트롤 레이아웃
+        # Set motor contorl layout
         motor_line_one = QHBoxLayout()
         motor_line_two = QHBoxLayout()
         motor_line_three = QHBoxLayout()
@@ -105,13 +103,13 @@ class Setup(QWidget):
         motor_control.addLayout(motor_line_two)
         motor_control.addLayout(motor_line_three)
 
-        # Save 버튼
+        # Save button
         save_button = QPushButton("Save")
         save_box = QHBoxLayout()
         save_box.addStretch(1)
         save_box.addWidget(save_button)
 
-        # 프로그램 전체 레이아웃 구성
+        # Set car_setup application layout
         total_control_box = QHBoxLayout()
         total_control_box.addLayout(servo_box)
         total_control_box.addLayout(motor_control)
@@ -120,17 +118,17 @@ class Setup(QWidget):
         main_box.addLayout(config_box)
         main_box.addLayout(save_box)
 
-        # Run 버튼 함수 연결
+        # link run button in run_button function
         run_button.clicked.connect(lambda: self.run_button_clicked())
-        # Save 버튼 함수 연결
+        # link save button in save_button function 
         save_button.clicked.connect(lambda: self.save_button_clicked())
-        # Stop 버튼 함수 연결
+        # link stop button in stop_button function
         stop_button.clicked.connect(lambda: self.stop_button_clicked())
-        # Reverse 버튼 함수 연결
+        # link reverse button in left/right_reverse function
         left_reverse.clicked.connect(lambda: self.left_reverse_clicked())
         right_reverse.clicked.connect(lambda: self.right_reverse_clicked())
 
-        # 창 설정
+        # Set window
         self.setLayout(main_box)
         self.setGeometry(300, 300, 500, 400)
         self.setWindowTitle("Car Setup")
