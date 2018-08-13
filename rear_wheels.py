@@ -25,7 +25,7 @@ pins = [Motor0_A, Motor0_B, Motor1_A, Motor1_B]
 # Adjust the duty cycle of the square waves output from channel 4 and 5 of
 # the servo driver IC, so as to control the speed of the car.
 # ===========================================================================
-def setSpeed(speed):
+def set_speed(speed):
     speed *= 40
     print('speed is: ', speed)
     pwm.write(EN_M0, 0, speed)
@@ -35,55 +35,47 @@ def setSpeed(speed):
 def setup(busnum):
     global forward0, forward1, backward0, backward1, pwm
 
-    if busnum == None:
+    if busnum is None:
         pwm = p.PWM()  # Initialize the servo controller.
     else:
         pwm = p.PWM(bus_number=busnum)  # Initialize the servo controller.
 
     pwm.frequency = 60
-    forward0 = 'True'
-    forward1 = 'False'
-    
+    forward0 = True
+    forward1 = True
+
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)  # Number GPIOs by its physical location
-    
+
     try:
+
         for line in open("config"):
             if line[0:8] == 'forward0':
-                if line[11:-1] == 'True':
-                    forward0 = 'True'
-                else:
-                    forward0 = 'False'
+                forward0 = True if line[11:-1] == 'True' else False
             if line[0:8] == 'forward1':
-                if line[11:-1] == 'True':
-                    forward1 = 'True'
-                else:
-                    forward1 = 'False'
-    except:
+                forward1 = True if line[11:-1] == 'True' else False
+
+    except IOError:
         pass
 
- 
-    if forward0 == 'True':
-	    backward0 = 'False'
-    elif forward0 == 'False':
-	    backward0 = 'True'
-    if forward1 == 'True':
-	    backward1 = 'False'
-    elif forward1 == 'False':
-	    backward1 = 'True'
+    backward0 = not forward0
+    backward1 = not forward1
+
     for pin in pins:
         GPIO.setup(pin, GPIO.OUT)  # Set all pins' mode as output
-        
+
+
 # ===========================================================================
-# Control the DC motor to make it rotate clockwise, so the car will 
+# Control the DC motor to make it rotate clockwise, so the car will
 # move forward.
 # ===========================================================================
 
+
 def left_motor(x):
-    if x == 'True':
+    if x:
         GPIO.output(Motor0_A, GPIO.HIGH)
         GPIO.output(Motor0_B, GPIO.LOW)
-    elif x == 'False':
+    elif not x:
         GPIO.output(Motor0_A, GPIO.LOW)
         GPIO.output(Motor0_B, GPIO.HIGH)
     else:
@@ -91,10 +83,10 @@ def left_motor(x):
 
 
 def right_motor(x):
-    if x == 'False':
+    if x:
         GPIO.output(Motor1_A, GPIO.LOW)
         GPIO.output(Motor1_B, GPIO.HIGH)
-    elif x == 'True':
+    elif not x:
         GPIO.output(Motor1_A, GPIO.HIGH)
         GPIO.output(Motor1_B, GPIO.LOW)
     else:
@@ -111,14 +103,14 @@ def backward():
     right_motor(backward1)
 
 
-def forwardWithSpeed(speed):
-    setSpeed(speed)
+def forward_with_speed(speed):
+    set_speed(speed)
     left_motor(forward0)
     right_motor(forward1)
 
 
-def backwardWithSpeed(speed):
-    setSpeed(speed)
+def backward_with_speed(speed):
+    set_speed(speed)
     left_motor(backward0)
     right_motor(backward1)
 
@@ -129,8 +121,8 @@ def stop():
 
 
 # ===========================================================================
-# The first parameter(status) is to control the state of the car, to make it 
-# stop or run. The parameter(direction) is to control the car's direction 
+# The first parameter(status) is to control the state of the car, to make it
+# stop or run. The parameter(direction) is to control the car's direction
 # (move forward or backward).
 # ===========================================================================
 def ctrl(status, direction=1):
