@@ -122,7 +122,7 @@ class Setup(QWidget):
         run_button.clicked.connect(lambda: self.run_button_clicked())
         
         # link save button in save_button_clicked function 
-        save_button.clicked.connect(lambda: self.save_button_clicked())
+        save_button.clicked.connect(lambda: self.save_button_clicked(True))
         
         # link stop button in stop_button_clicked function
         stop_button.clicked.connect(lambda: self.stop_button_clicked())
@@ -177,7 +177,7 @@ class Setup(QWidget):
         f.close()
         self.config_text.setText(print_text)
 
-    def save_button_clicked(self):
+    def save_button_clicked(self, is_exit):
         f = open("./config", 'w')
         f.write("# File based database.\n")
         f.write("\n")
@@ -196,17 +196,21 @@ class Setup(QWidget):
             temp += "False\n"
         f.write(temp)
         f.close()
+        
+        if is_exit is True:
+            rear_wheels.stop()
+            exit()
 
     def left_reverse_clicked(self):
         self.db_data["forward0"] = not self.db_data["forward0"]
-        self.save_button_clicked()
+        self.save_button_clicked(False)
         self.show_database()
         if self.is_run:
             self.run_button_clicked()
 
     def right_reverse_clicked(self):
         self.db_data["forward1"] = not self.db_data["forward1"]
-        self.save_button_clicked()
+        self.save_button_clicked(False)
         self.show_database()
         if self.is_run:
             self.run_button_clicked()
@@ -230,7 +234,7 @@ class Setup(QWidget):
         elif action is "a_right":
             fr_wheels.cali_accurate_right()
         self.db_data["turning_offset"] = fr_wheels.return_cali_offset()
-        self.save_button_clicked()
+        self.save_button_clicked(False)
         self.show_database()
 
 
