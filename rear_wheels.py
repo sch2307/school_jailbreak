@@ -1,119 +1,188 @@
-import RPi.GPIO as GPIO
-from PCA9685 import PCA9685 as p
+#!/usr/bin/env python
+'''
+**********************************************************************
+* Filename    : back_wheels.py
+* Description : A module to control the back wheels of RPi Car
+* Author      : Cavon
+* Brand       : SunFounder
+* E-mail      : service@sunfounder.com
+* Website     : www.sunfounder.com
+* Update      : Cavon    2016-09-13    New release
+*               Cavon    2016-11-04    fix for submodules
+**********************************************************************
+'''
 
-# ===========================================================================
-# Raspberry Pi pin 11, 12, 13 and 15 to realize the clockwise/counterclockwise
-# rotation and forward and backward movements
-# ===========================================================================
-Motor0_A = 11  # GPIO 17
-Motor0_B = 12  # GPIO 18
-Motor1_A = 13  # GPIO 27
-Motor1_B = 15  # GPIO 22
+from SunFounder_TB6612 import TB6612
+from SunFounder_PCA9685 import PCA9685
+import filedb
 
-# ===========================================================================
-# Set channel 4 and 5 of the servo driver IC to generate PWM, thus 
-# controlling the speed of the car
-# ===========================================================================
-EN_M0 = 4  # servo driver IC CH4
-EN_M1 = 5  # servo driver IC CH5
+class Back_Wheels(object):
+	''' Back wheels control class '''
+	Motor_A = 17
+	Motor_B = 27
 
-pins = [Motor0_A, Motor0_B, Motor1_A, Motor1_B]
+	PWM_A = 4
+	PWM_B = 5
 
+	_DEBUG = False
+	_DEBUG_INFO = 'DEBUG "back_wheels.py":'
 
-# ===========================================================================
-# Adjust the duty cycle of the square waves output from channel 4 and 5 of
-# the servo driver IC, so as to control the speed of the car.
-# ===========================================================================
-def set_speed(speed):
-    speed *= 40
-    print('speed is: ', (speed / 40))
-    pwm.write(EN_M0, 0, speed)
-    pwm.write(EN_M1, 0, speed)
+	def __init__(self, debug=False, bus_number=1, db="config"):
+		''' Init the direction channel and pwm channel '''
+		self.forward_A = True
+		self.forward_B = True
 
+		self.db = filedb.fileDB(db=db)
 
-def setup(busnum):
-    global forward0, forward1, backward0, backward1, pwm
+		self.forward_A = int(self.db.get('forward_A', default_value=1))
+		self.forward_B = int(self.db.get('forward_B', default_value=1))
 
-    if busnum is None:
-        pwm = p.PWM()  # Initialize the servo controller.
-    else:
-        pwm = p.PWM(bus_number=busnum)  # Initialize the servo controller.
+		self.left_wheel = TB6612.Motor(self.Motor_A, offset=self.forward_A)
+		self.right_wheel = TB6612.Motor(self.Motor_B, offset=self.forward_B)
 
-    pwm.frequency = 60
-    forward0 = True
-    forward1 = True
+		self.pwm = PCA9685.PWM(bus_number=bus_number)
+		def _set_a_pwm(value):
+			pulse_wide = self.pwm.map(value, 0, 100, 0, 4095)
+			self.pwm.write(self.PWM_A, 0, pulse_wide)
 
-    GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BOARD)  # Number GPIOs by its physical location
+		def _set_b_pwm(value):
+			pulse_wide = self.pwm.map(value, 0, 100, 0, 4095)
+			self.pwm.write(self.PWM_B, 0, pulse_wide)
 
-    try:
+		self.left_wheel.pwm  = _set_a_pwm
+		self.right_wheel.pwm = _set_b_pwm
 
-        for line in open("config"):
-            if line[0:8] == 'forward0':
-                forward0 = True if line[11:-1] == 'True' else False
-            if line[0:8] == 'forward1':
-                forward1 = True if line[11:-1] == 'True' else False
+		self._speed = 0
 
-    except IOError as e:
-        print(e)
+		self.debug = debug
+		if self._DEBUG:
+			print self._DEBUG_INFO, 'Set left wheel to #%d, PWM channel to %d' % (self.Motor_A, self.PWM_A)
+			print self._DEBUG_INFO, 'Set right wheel to #%d, PWM channel to %d' % (self.Motor_B, self.PWM_B)
 
-    backward0 = not forward0
-    backward1 = not forward1
+	def forward(self):
+		''' Move both wheels forward '''
+		self.left_wheel.forward()
+		self.right_wheel.forward()
+		if self._DEBUG:
+			print self._DEBUG_INFO, 'Running forward'
 
-    for pin in pins:
-        GPIO.setup(pin, GPIO.OUT)  # Set all pins' mode as output
+	def backward(self):
+		''' Move both wheels backward '''
+		self.left_wheel.backward()
+		self.right_wheel.backward()
+		if self._DEBUG:
+			print self._DEBUG_INFO, 'Running backward'
 
+	def stop(self):
+		''' Stop both wheels '''
+		self.left_wheel.stop()
+		self.right_wheel.stop()
+		if self._DEBUG:
+			print self._DEBUG_INFO, 'Stop'
 
-# ===========================================================================
-# Control the DC motor to make it rotate clockwise, so the car will
-# move forward.
-# ===========================================================================
+	@property
+	def speed(self, speed):
+		return self._speed
 
+	@speed.setter
+	def speed(self, speed):
+		self._speed = speed
+		''' Set moving speeds '''
+		self.left_wheel.speed = self._speed
+		self.right_wheel.speed = self._speed
+		if self._DEBUG:
+			print self._DEBUG_INFO, 'Set speed to', self._speed
 
-def left_motor(set_direction):
-    if set_direction:
-        GPIO.output(Motor0_A, GPIO.HIGH)
-        GPIO.output(Motor0_B, GPIO.LOW)
-    elif not set_direction:
-        GPIO.output(Motor0_A, GPIO.LOW)
-        GPIO.output(Motor0_B, GPIO.HIGH)
-    else:
-        print('Config Error')
+	@property
+	def debug(self):
+		return self._DEBUG
 
+	@debug.setter
+	def debug(self, debug):
+		''' Set if debug information shows '''
+		if debug in (True, False):
+			self._DEBUG = debug
+		else:
+			raise ValueError('debug must be "True" (Set debug on) or "False" (Set debug off), not "{0}"'.format(debug))
 
-def right_motor(set_direction):
-    if set_direction:
-        GPIO.output(Motor1_A, GPIO.LOW)
-        GPIO.output(Motor1_B, GPIO.HIGH)
-    elif not set_direction:
-        GPIO.output(Motor1_A, GPIO.HIGH)
-        GPIO.output(Motor1_B, GPIO.LOW)
-    else:
-        print('Config Error')
+		if self._DEBUG:
+			print self._DEBUG_INFO, "Set debug on"
+			self.left_wheel.debug = True
+			self.right_wheel.debug = True
+			self.pwm.debug = True
+		else:
+			print self._DEBUG_INFO, "Set debug off"
+			self.left_wheel.debug = False
+			self.right_wheel.debug = False
+			self.pwm.debug = False
 
+	def ready(self):
+		''' Get the back wheels to the ready position. (stop) '''
+		if self._DEBUG:
+			print self._DEBUG_INFO, 'Turn to "Ready" position'
+		self.left_wheel.offset = self.forward_A
+		self.right_wheel.offset = self.forward_B
+		self.stop()
 
-def forward():
-    left_motor(forward0)
-    right_motor(forward1)
+	def calibration(self):
+		''' Get the front wheels to the calibration position. '''
+		if self._DEBUG:
+			print self._DEBUG_INFO, 'Turn to "Calibration" position'
+		self.speed = 50
+		self.forward()
+		self.cali_forward_A = self.forward_A
+		self.cali_forward_B = self.forward_B
 
+	def cali_left(self):
+		''' Reverse the left wheels forward direction in calibration '''
+		self.cali_forward_A = (1 + self.cali_forward_A) & 1
+		self.left_wheel.offset = self.cali_forward_A
+		self.forward()
 
-def backward():
-    left_motor(backward0)
-    right_motor(backward1)
+	def cali_right(self):
+		''' Reverse the right wheels forward direction in calibration '''
+		self.cali_forward_B = (1 + self.cali_forward_B) & 1
+		self.right_wheel.offset = self.cali_forward_B
+		self.forward()
 
+	def cali_ok(self):
+		''' Save the calibration value '''
+		self.forward_A = self.cali_forward_A
+		self.forward_B = self.cali_forward_B
+		self.db.set('forward_A', self.forward_A)
+		self.db.set('forward_B', self.forward_B)
+		self.stop()
 
-def forward_with_speed(speed):
-    set_speed(speed)
-    left_motor(forward0)
-    right_motor(forward1)
+def test():
+	import time
+	back_wheels = Back_Wheels()
+	DELAY = 0.01
+	try:
+		back_wheels.forward()
+		for i in range(0, 100):
+			back_wheels.speed = i
+			print "Forward, speed =", i
+			time.sleep(DELAY)
+		for i in range(100, 0, -1):
+			back_wheels.speed = i
+			print "Forward, speed =", i
+			time.sleep(DELAY)
 
+		back_wheels.backward()
+		for i in range(0, 100):
+			back_wheels.speed = i
+			print "Backward, speed =", i
+			time.sleep(DELAY)
+		for i in range(100, 0, -1):
+			back_wheels.speed = i
+			print "Backward, speed =", i
+			time.sleep(DELAY)
+	except KeyboardInterrupt:
+		print "KeyboardInterrupt, motor stop"
+		back_wheels.stop()
+	finally:
+		print "Finished, motor stop"
+		back_wheels.stop()
 
-def backward_with_speed(speed):
-    set_speed(speed)
-    left_motor(backward0)
-    right_motor(backward1)
-
-
-def stop():
-    for pin in pins:
-        GPIO.output(pin, GPIO.LOW)
+if __name__ == '__main__':
+	test()
