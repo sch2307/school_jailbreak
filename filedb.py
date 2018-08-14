@@ -17,8 +17,9 @@ class fileDB(object):
         try:
             conf = open(self.db, 'r')
             lines = conf.readlines()
+            print(lines)
             conf.close()
-            file_len = len(lines) - 1
+            file_len = len(lines)
             flag = False
             # Find the argument and set the value
             for i in range(file_len):
