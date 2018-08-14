@@ -164,7 +164,7 @@ def test():
             back_wheels.speed = i
             print("Backward, speed =", i)
             time.sleep(DELAY)
-            for i in range(100, 0, -1):
+        for i in range(100, 0, -1):
             back_wheels.speed = i
             print("Backward, speed =", i)
             time.sleep(DELAY)
@@ -174,6 +174,7 @@ def test():
     finally:
         print("Finished, motor stop")
         back_wheels.stop()
+
 
 if __name__ == '__main__':
     test()
