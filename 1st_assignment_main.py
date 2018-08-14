@@ -50,7 +50,10 @@ backward_speed = 30
 # =======================================================================
 def main():
     # Implement the assignment code here.
-    pass
+    rear_wheels_drive.speed = 40
+    rear_wheels_drive.forward()
+    time.sleep(0.5)
+    rear_wheels_drive.stop()
 
 
 def moduleInitialize():
@@ -79,6 +82,7 @@ def moduleInitialize():
         # ================================================================
         # REAR WHEEL DRIVER SETUP
         # ================================================================
+        global rear_wheels_drive
         rear_wheels_drive = rear_wheels.Rear_Wheels(db='config')
         rear_wheels_drive.ready()
 
