@@ -12,10 +12,10 @@ class Back_Wheels(object):
     PWM_A = 4 # servo driver IC CH4
     PWM_B = 5 # servo driver IC CH5
 
-    _DEBUG = True
+    _DEBUG = False
     _DEBUG_INFO = 'DEBUG "rear_wheels.py":'
 
-    def __init__(self, debug=True, bus_number=1, db="config"):
+    def __init__(self, debug=False, bus_number=1, db="config"):
         """ Init the direction channel and pwm channel """
         self.forward_A = True
         self.forward_B = True
@@ -28,18 +28,20 @@ class Back_Wheels(object):
         self.left_wheel = L298N.Motor(self.Motor_IN1, self.Motor_IN2, offset=self.forward_A)
         self.right_wheel = L298N.Motor(self.Motor_IN3, self.Motor_IN4, offset=self.forward_B)
 
+        # PWM Setup
         self.pwm = PCA9685.PWM(bus_number=bus_number)
+        self.pwm.frequency = 60
+    
+        def _set_a_pwm(value):
+            pulse_wide = self.pwm.map(value, 0, 100, 0, 4095)
+            self.pwm.write(self.PWM_A, 0, int(pulse_wide))
 
-    def _set_a_pwm(self, value):
-        pulse_wide = self.pwm.map(value, 0, 100, 0, 4095)
-        self.pwm.write(self.PWM_A, 0, pulse_wide)
+        def _set_b_pwm(value):
+            pulse_wide = self.pwm.map(value, 0, 100, 0, 4095)
+            self.pwm.write(self.PWM_B, 0, int(pulse_wide))
 
-    def _set_b_pwm(self, value):
-        pulse_wide = self.pwm.map(value, 0, 100, 0, 4095)
-        self.pwm.write(self.PWM_B, 0, pulse_wide)
-
-        self.left_wheel.pwm  = self._set_a_pwm
-        self.right_wheel.pwm = self._set_b_pwm
+        self.left_wheel.pwm  = _set_a_pwm
+        self.right_wheel.pwm = _set_b_pwm
 
         self._speed = 0
 
@@ -148,34 +150,34 @@ def test():
     back_wheels = Back_Wheels()
     back_wheels.ready()
     DELAY = 0.01
-    try:
-        back_wheels.forward()
-        for i in range(0, 100):
-            back_wheels.speed = i
-            print("Forward, speed =", i)
-            time.sleep(DELAY)
-        for i in range(100, 0, -1):
-            back_wheels.speed = i
-            print("Forward, speed =", i)
-            time.sleep(DELAY)
+    while True:
+        try:
+            back_wheels.forward()
+            back_wheels.speed = 40
+#        for i in range(0, 100):
+#            back_wheels.speed = i
+#            print("Forward, speed =", i)
+#            time.sleep(DELAY)
+#        for i in range(100, 0, -1):
+#            back_wheels.speed = i
+#            print("Forward, speed =", i)
+#            time.sleep(DELAY)
 
-        back_wheels.backward()
-        for i in range(0, 100):
-            back_wheels.speed = i
-            print("Backward, speed =", i)
-            time.sleep(DELAY)
-        for i in range(100, 0, -1):
-            back_wheels.speed = i
-            print("Backward, speed =", i)
-            time.sleep(DELAY)
-    except KeyboardInterrupt:
-        print("KeyboardInterrupt, motor stop")
-        back_wheels.stop()
-    finally:
-        print("Finished, motor stop")
-        back_wheels.stop()
+#        back_wheels.backward()
+#        for i in range(0, 100):
+#            back_wheels.speed = i
+#            print("Backward, speed =", i)
+#            time.sleep(DELAY)
+#        for i in range(100, 0, -1):
+#            back_wheels.speed = i
+#            print("Backward, speed =", i)
+#            time.sleep(DELAY)
+
+        except KeyboardInterrupt:
+            print("KeyboardInterrupt, motor stop")
+            back_wheels.stop()
+            break
 
 
 if __name__ == '__main__':
     test()
-

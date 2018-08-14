@@ -11,7 +11,7 @@ class Motor(object):
         PWM channel using PCA9685, Set pwm_address to your address, if is not 0x40
         Set debug to True to print out debug informations.
     """
-    _DEBUG = True
+    _DEBUG = False
     _DEBUG_INFO = 'DEBUG "L298N.py":'
 
     def __init__(self, forward_direction_channel, backward_direction_channel, pwm=None, offset=True):
@@ -21,8 +21,6 @@ class Motor(object):
         self.forward_direction_channel = forward_direction_channel
         self.backward_direction_channel = backward_direction_channel
         self._pwm = pwm
-   
-        # print(pwm)
 
         self._offset = offset
         self.forward_offset = self._offset
@@ -31,12 +29,12 @@ class Motor(object):
         self._speed = 0
 
         GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BOARD)
+        GPIO.setmode(GPIO.BOARD) # Number GPIOs by its physical location
 
         if self._DEBUG:
             print(self._DEBUG_INFO, 'setup motor forward direction channel at', forward_direction_channel)
             print(self._DEBUG_INFO, 'setup motor backward direction channel at', backward_direction_channel)
-            # print(self._DEBUG_INFO, 'setup motor pwm channel as', self._pwm.__name__)
+            print(self._DEBUG_INFO, 'setup motor pwm channel as', self._pwm)
 
         GPIO.setup(self.forward_direction_channel, GPIO.OUT)
         GPIO.setup(self.backward_direction_channel, GPIO.OUT)
@@ -54,15 +52,15 @@ class Motor(object):
             raise ValueError('pwm is not callable, please set Motor.pwm to a pwm control function '
                              'with only 1 veriable speed')
 
-        if self._DEBUG:
-            print(self._DEBUG_INFO, 'Set speed to: ', speed)
+        #if self._DEBUG
+        print(self._DEBUG_INFO, 'Set speed to: ', speed)
         self._speed = speed
         self._pwm(self._speed)
 
     def forward(self):
         """ Set the motor direction to forward """
-        GPIO.output(self.forward_direction_channel, GPIO.HIGH)
-        GPIO.output(self.backward_direction_channel, GPIO.LOW)
+        GPIO.output(self.forward_direction_channel, GPIO.LOW)
+        GPIO.output(self.backward_direction_channel, GPIO.HIGH)
         self.speed = self._speed
         if self._DEBUG:
             print(self._DEBUG_INFO, 'Motor moving forward (%s)' % str(self.forward_offset))
@@ -70,7 +68,7 @@ class Motor(object):
     def backward(self):
         """ Set the motor direction to backward """
         GPIO.output(self.backward_direction_channel, GPIO.LOW)
-        GPIO.output(self.forward_direction_channel, GPIO.HIGH)
+        GPIO.output(self.backward_direction_channel, GPIO.HIGH)
         self.speed = self._speed
         if self._DEBUG:
             print(self._DEBUG_INFO, 'Motor moving backward (%s)' % str(self.backward_offset))
@@ -120,4 +118,5 @@ class Motor(object):
     def pwm(self, pwm):
         if self._DEBUG:
             print(self._DEBUG_INFO, 'pwm set')
+        print("PWM Object in", pwm)
         self._pwm = pwm
