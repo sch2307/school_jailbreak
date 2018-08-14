@@ -17,16 +17,14 @@ class Rear_Wheels(object):
 
     def __init__(self, debug=False, bus_number=1, db="config"):
         """ Init the direction channel and pwm channel """
-        self.forward_A = True
-        self.forward_B = True
 
         self.db = filedb.fileDB(db=db)
 
-        self.forward_A = int(self.db.get('forward_A', default_value=1))
-        self.forward_B = int(self.db.get('forward_B', default_value=1))
+        self.forward_A = int(self.db.get("forward_A", default_value=1))
+        self.forward_B = int(self.db.get("forward_B", default_value=0))
 
-        self.left_wheel = L298N.Motor(self.Motor_IN1, self.Motor_IN2, offset=self.forward_A)
-        self.right_wheel = L298N.Motor(self.Motor_IN3, self.Motor_IN4, offset=self.forward_B)
+        self.left_wheel = L298N.Motor(self.Motor_IN1, self.Motor_IN2, offset=self.forward_A, is_left=True)
+        self.right_wheel = L298N.Motor(self.Motor_IN3, self.Motor_IN4, offset=self.forward_B, is_left=False)
 
         # PWM Setup
         self.pwm = PCA9685.PWM(bus_number=bus_number)
@@ -70,6 +68,28 @@ class Rear_Wheels(object):
         self.right_wheel.stop()
         if self._DEBUG:
             print(self._DEBUG_INFO, 'Stop')
+
+    def forward_with_speed(self, speed_value):
+        """ Move both wheels forward with speed """
+        # Setup motor speed
+        self._speed = speed_value
+        self.speed = self._speed
+
+        self.left_wheel.forward()
+        self.right_wheel.forward()
+        if self._DEBUG:
+            print(self._DEBUG_INFO, 'Running forward with speed')
+
+    def backward_with_speed(self, speed_value):
+        """ Move both wheels backward with speed """
+        # Setup motor speed
+        self._speed = speed_value
+        self.speed = self._speed
+
+        self.left_wheel.backward()
+        self.right_wheel.backward()
+        if self._DEBUG:
+            print(self._DEBUG_INFO, 'Running backward with speed')
 
     @property
     def speed(self, speed):
