@@ -45,6 +45,7 @@ GPIO.setwarnings(False)
 # Complete the code to perform Third Assignment
 # =======================================================================
 def lineFollower_main():
+    # implement the assignment code here
     pass
 
 
@@ -53,27 +54,32 @@ def moduleInitialize():
         # ================================================================
         # ULTRASONIC MODULE DRIVER INITIALIZE
         # ================================================================
+        global distance_detector
         distance_detector = Ultrasonic_Sensor.Ultrasonic_Avoidance(35)
 
         # ================================================================
         # TRACKING MODULE DRIVER INITIALIZE
         # ================================================================
+        global line_detector
         line_detector = Tracking_Sensor.SEN040134_Tracking([16, 18, 22, 40, 32])
 
         # ================================================================
         # RGB MODULE DRIVER INITIALIZE
         # ================================================================
+        global color_getter
         color_getter = RGB_Sensor.TCS34725()
 
         # ================================================================
         # FRONT WHEEL DRIVER SETUP
         # ================================================================
+        global front_steering
         front_steering = front_wheels.Front_Wheels(db='config')
         front_steering.ready()
 
         # ================================================================
         # REAR WHEEL DRIVER SETUP
         # ================================================================
+        global rear_wheels_drive
         rear_wheels_drive = rear_wheels.Rear_Wheels(db='config')
         rear_wheels_drive.ready()
 
@@ -105,5 +111,5 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         # when the Ctrl+C key has been pressed,
         # the moving object will be stopped
-        rear_wheels.stop()
+        rear_wheels_drive.stop()
         front_steering.turn_straight()
