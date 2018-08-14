@@ -74,7 +74,8 @@ def moduleInitialize():
         # ================================================================
         # REAR WHEEL DRIVER SETUP
         # ================================================================
-        rear_wheels.setup(1)
+        rear_wheels_drive = rear_wheels.Rear_Wheels(db='config')
+        rear_wheels_drive.ready()
 
         # ================================================================
         # SET LIMIT OF TURNING DEGREE

@@ -79,7 +79,8 @@ def moduleInitialize():
         # ================================================================
         # REAR WHEEL DRIVER SETUP
         # ================================================================
-        rear_wheels.setup(1)
+        rear_wheels_drive = rear_wheels.Rear_Wheels(db='config')
+        rear_wheels_drive.ready()
 
         # ================================================================
         # SET LIMIT OF TURNING DEGREE
@@ -109,5 +110,5 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         # when the Ctrl+C key has been pressed,
         # the moving object will be stopped
-        rear_wheels.stop()
+        rear_wheels_drive.stop()
         front_steering.turn_straight()

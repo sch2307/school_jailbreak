@@ -2,7 +2,7 @@ from L298N import L298N
 from PCA9685 import PCA9685
 import filedb
 
-class Back_Wheels(object):
+class Rear_Wheels(object):
     """ Back wheels control class """
     Motor_IN1 = 11
     Motor_IN2 = 12
@@ -143,41 +143,3 @@ class Back_Wheels(object):
         self.db.set('forward_A', self.forward_A)
         self.db.set('forward_B', self.forward_B)
         self.stop()
-
-
-def test():
-    import time
-    back_wheels = Back_Wheels()
-    back_wheels.ready()
-    DELAY = 0.01
-    while True:
-        try:
-            back_wheels.forward()
-            back_wheels.speed = 40
-#        for i in range(0, 100):
-#            back_wheels.speed = i
-#            print("Forward, speed =", i)
-#            time.sleep(DELAY)
-#        for i in range(100, 0, -1):
-#            back_wheels.speed = i
-#            print("Forward, speed =", i)
-#            time.sleep(DELAY)
-
-#        back_wheels.backward()
-#        for i in range(0, 100):
-#            back_wheels.speed = i
-#            print("Backward, speed =", i)
-#            time.sleep(DELAY)
-#        for i in range(100, 0, -1):
-#            back_wheels.speed = i
-#            print("Backward, speed =", i)
-#            time.sleep(DELAY)
-
-        except KeyboardInterrupt:
-            print("KeyboardInterrupt, motor stop")
-            back_wheels.stop()
-            break
-
-
-if __name__ == '__main__':
-    test()
