@@ -147,15 +147,13 @@ class Setup(QWidget):
 
     def init_modules(self):
         # front_wheels PWM Driver Initialize
-        global fr_wheels
-        fr_wheels = front_wheels.Front_Wheels(db='config')
-        fr_wheels.ready()
-        fr_wheels.calibration()
+        self.fr_wheels = front_wheels.Front_Wheels(db='config')
+        self.fr_wheels.ready()
+        self.fr_wheels.calibration()
 
         # rear_wheels PWM Driver Initialize
-        global rear_wheels_drive
-        rear_wheels_drive = rear_wheels.Rear_Wheels(db='config')
-        rear_wheels_drive.ready()
+        self.rear_wheels_drive = rear_wheels.Rear_Wheels(db='config')
+        self.rear_wheels_drive.ready()
 
     def init_database(self):
         self.db_data["turning_offset"] = -22
@@ -174,7 +172,6 @@ class Setup(QWidget):
         print_text = ""
         for line in f:
             print_text += line
-            # print_text += "\n"
         f.close()
         self.config_text.setText(print_text)
 
@@ -185,32 +182,26 @@ class Setup(QWidget):
         temp = "turning_offset = " + str(self.db_data["turning_offset"]) + "\n"
         f.write(temp)
         temp = "forward_A = "
-        if self.db_data["forward_A"] is True:
-            temp += "1\n"
-        else:
-            temp += "0\n"
+        temp += "1\n" if self.db_data["forward_A"] == 1 else "0\n"
         f.write(temp)
         temp = "forward_B = "
-        if self.db_data["forward_B"] is True:
-            temp += "1\n"
-        else:
-            temp += "0\n"
+        temp += "1\n" if self.db_data["forward_B"] == 1 else "0\n"
         f.write(temp)
         f.close()
         
         if is_exit is True:
-            rear_wheels.stop()
+            self.rear_wheels_drive.stop()
             exit()
 
     def left_reverse_clicked(self):
-        self.db_data["forward_A"] = not self.db_data["forward_A"]
+        self.db_data["forward_A"] = self.db_data["forward_A"] ^ 1
         self.save_button_clicked(False)
         self.show_database()
         if self.is_run:
             self.run_button_clicked()
 
     def right_reverse_clicked(self):
-        self.db_data["forward_B"] = not self.db_data["forward_B"]
+        self.db_data["forward_B"] = self.db_data["forward_B"] ^ 1
         self.save_button_clicked(False)
         self.show_database()
         if self.is_run:
@@ -219,22 +210,22 @@ class Setup(QWidget):
     def run_button_clicked(self):
         self.is_run = True
         self.init_modules()
-        rear_wheels_drive.forward_with_speed(40)
+        self.rear_wheels_drive.forward_with_speed(40)
 
     def stop_button_clicked(self):
         self.is_run = False
-        rear_wheels_drive.stop()
+        self.rear_wheels_drive.stop()
 
     def servo_clicked(self, action):
         if action is "left":
-            fr_wheels.cali_left()
+            self.fr_wheels.cali_left()
         elif action is "right":
-            fr_wheels.cali_right()
+            self.fr_wheels.cali_right()
         elif action is "a_left":
-            fr_wheels.cali_accurate_left()
+            self.fr_wheels.cali_accurate_left()
         elif action is "a_right":
-            fr_wheels.cali_accurate_right()
-        self.db_data["turning_offset"] = fr_wheels.return_cali_offset()
+            self.fr_wheels.cali_accurate_right()
+        self.db_data["turning_offset"] = self.fr_wheels.return_cali_offset()
         self.save_button_clicked(False)
         self.show_database()
 
