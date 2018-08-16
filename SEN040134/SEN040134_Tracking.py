@@ -16,7 +16,6 @@ class SEN040134_Tracking(object):
     # =======================================================================
     #  channel initializing
     # =======================================================================
-    gpio_channel = []
 
     def __init__(self, channel):
         # =======================================================================
@@ -36,12 +35,10 @@ class SEN040134_Tracking(object):
         #
         # =======================================================================
 
-        global gpio_channel
-        gpio_channel = channel
-        print("gpio channel", gpio_channel)
+        self.gpio_channel = channel
 
         for i in range(0, 5):
-            GPIO.setup(gpio_channel[i], GPIO.IN)
+            GPIO.setup(self.gpio_channel[i], GPIO.IN)
 
     # =======================================================================
     # GPIO.input(leftmostled) method gives the data obtained from leftmostled
@@ -68,7 +65,7 @@ class SEN040134_Tracking(object):
     def read_digital(self):
         digital_list = []
         for i in range(0, 5):
-            temp = GPIO.input(gpio_channel[i])
+            temp = GPIO.input(self.gpio_channel[i])
             digital_list.append(0 if temp == 1 else 1)
         return digital_list
 
@@ -89,13 +86,11 @@ class SEN040134_Tracking(object):
         return False
 
     def wait_tile_status(self, status):
-        while True:
-            lt_status = self.read_digital()
-            if lt_status in status:
-                break
+        lt_status = self.read_digital()
+        if lt_status in status:
+            return True
 
     def wait_tile_center(self):
-        while True:
-            lt_status = self.read_digital()
-            if lt_status[2] == 1:
-                break
+        lt_status = self.read_digital()
+        if lt_status[2] == 1:
+            return True
