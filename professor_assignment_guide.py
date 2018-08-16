@@ -43,10 +43,12 @@ forward_speed = 35
 backward_speed = 32
 turning_angle = 35
 
-def 1st_main():
+delay = 0.0005
+
+def first_main():
     # front_wheels center allignment
     front_steering.turn_straight()
-    
+
     # forward-assignment
     rear_wheels_drive.forward_with_speed(30)
     time.sleep(2) #30-2s
@@ -65,20 +67,20 @@ def 1st_main():
 
     # stop
     rear_wheels_drive.stop()
-    
-def lineFollwer_main():
+
+def lineFollower_main():
     global turning_angle
 
     a_step = 5
     b_step = 10
     c_step = 30
     d_step = 45
-    
+
     rear_wheels_drive.forward_with_speed(forward_speed)
 
-    while True:    
-        lt_status_now = LF.read_digital()
-        
+    while True:
+        lt_status_now = line_detector.read_digital()
+
         # Angle calculate
         if lt_status_now == [0, 0, 1, 0, 0] or lt_status_now == [0, 1, 1, 1, 0]:
             step = 0
@@ -107,14 +109,14 @@ def lineFollwer_main():
             rear_wheels_drive.forward_with_speed(forward_speed)
             time.sleep(0.1)
             rear_wheels_drive.stop()
-            if LF.read_digital() == [0, 0, 0, 0, 0]:
+            if line_detector.read_digital() == [0, 0, 0, 0, 0]:
                 time.sleep(0.05)
                 rear_wheels_drive.stop()
                 store_angle = turning_angle
                 turning_angle = 120 if turning_angle < 90 else 60
                 front_steering.turn(turning_angle)
                 time.sleep(0.1)
-                while sum(LF.read_digital()) <= 1:
+                while sum(line_detector.read_digital()) <= 1:
                     rear_wheels_drive.backward_with_speed(backward_speed)
                     time.sleep(0.1)
                 rear_wheels_drive.stop()
@@ -187,7 +189,8 @@ def moduleInitialize():
 if __name__ == "__main__":
     try:
         moduleInitialize()
-        1st_main()
+        #first_main()
+        lineFollower_main()
 
     except KeyboardInterrupt:
         # when the Ctrl+C key has been pressed,
