@@ -50,6 +50,8 @@ backward_speed = 30
 # =======================================================================
 def main():
     # Implement the assignment code here.
+    pass
+
 
 def moduleInitialize():
     try:
