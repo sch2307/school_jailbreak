@@ -1,10 +1,10 @@
-######################################################################
+#########################################################################
 # Date: 2018/08/09
 # file name: 2nd_assignment_main.py
 # Purpose: this code has been generated for the 4WD moving
 #         object to perform the project with ultra sensor
 # this code is used for the student only
-######################################################################
+#########################################################################
 
 
 # =======================================================================
@@ -40,76 +40,78 @@ import front_wheels
 GPIO.setwarnings(False)
 
 
-# =======================================================================
-# 2ND_ASSIGNMENT_CODE
-# Complete the code to perform Second Assignment
-# =======================================================================
-def lineFollower_main():
-    # implement the assignment code here
-    pass
+class Car(object):
 
+    def __init__(self):
+        self.moduleInitialize()
 
-def moduleInitialize():
-    try:
-        # ================================================================
-        # ULTRASONIC MODULE DRIVER INITIALIZE
-        # ================================================================
-        global distance_detector
-        distance_detector = Ultrasonic_Sensor.Ultrasonic_Avoidance(35)
+    def drive_parking(self):
+        self.front_steering.turn_straight()
+        self.rear_wheels_drive.stop()
 
-        # ================================================================
-        # TRACKING MODULE DRIVER INITIALIZE
-        # ================================================================
-        global line_detector
-        line_detector = Tracking_Sensor.SEN040134_Tracking([16, 18, 22, 40, 32])
+    # =======================================================================
+    # 2ND_ASSIGNMENT_CODE
+    # Complete the code to perform Second Assignment
+    # =======================================================================
+    def assignment_main(self):
+        # implement the assignment code here
+        pass
 
-        # ================================================================
-        # RGB MODULE DRIVER INITIALIZE
-        # ================================================================
-        global color_getter
-        color_getter = RGB_Sensor.TCS34725()
+    def moduleInitialize(self):
+        try:
+            # ================================================================
+            # ULTRASONIC MODULE DRIVER INITIALIZE
+            # ================================================================
+            self.distance_detector = Ultrasonic_Sensor.Ultrasonic_Avoidance(35)
 
-        # ================================================================
-        # FRONT WHEEL DRIVER SETUP
-        # ================================================================
-        global front_steering
-        front_steering = front_wheels.Front_Wheels(db='config')
-        front_steering.ready()
+            # ================================================================
+            # TRACKING MODULE DRIVER INITIALIZE
+            # ================================================================
+            self.line_detector = Tracking_Sensor.SEN040134_Tracking([16, 18, 22, 40, 32])
 
-        # ================================================================
-        # REAR WHEEL DRIVER SETUP
-        # ================================================================
-        global rear_wheels_drive
-        rear_wheels_drive = rear_wheels.Rear_Wheels(db='config')
-        rear_wheels_drive.ready()
+            # ================================================================
+            # RGB MODULE DRIVER INITIALIZE
+            # ================================================================
+            self.color_getter = RGB_Sensor.TCS34725()
 
-        # ================================================================
-        # SET LIMIT OF TURNING DEGREE
-        # ================================================================
-        front_steering.turning_max = 35
+            # ================================================================
+            # FRONT WHEEL DRIVER SETUP
+            # ================================================================
+            self.front_steering = front_wheels.Front_Wheels(db='config')
+            self.front_steering.ready()
 
-        # ================================================================
-        # SET FRONT WHEEL CENTOR ALLIGNMENT
-        # ================================================================
-        front_steering.turn_straight()
+            # ================================================================
+            # REAR WHEEL DRIVER SETUP
+            # ================================================================
+            self.rear_wheels_drive = rear_wheels.Rear_Wheels(db='config')
+            self.rear_wheels_drive.ready()
 
-        # ================================================================
-        # DISABLE RGB MODULE INTERRUPTION
-        # ================================================================
-        color_getter.set_interrupt(False)
+            # ================================================================
+            # SET LIMIT OF TURNING DEGREE
+            # ===============================================================
+            self.front_steering.turning_max = 35
 
-    except:
-        print("MODULE INITIALIZE ERROR")
-        print("CONTACT TO Kookmin Univ. Teaching Assistant")
+            # ================================================================
+            # SET FRONT WHEEL CENTOR ALLIGNMENT
+            # ================================================================
+            self.front_steering.turn_straight()
+
+            # ================================================================
+            # DISABLE RGB MODULE INTERRUPTION
+            # ================================================================
+            self.color_getter.set_interrupt(False)
+
+        except:
+            print("MODULE INITIALIZE ERROR")
+            print("CONTACT TO Kookmin Univ. Teaching Assistant")
 
 
 if __name__ == "__main__":
     try:
-        moduleInitialize()
-        lineFollwer_main()
+        car = Car()
+        car.assignment_main()
 
     except KeyboardInterrupt:
         # when the Ctrl+C key has been pressed,
         # the moving object will be stopped
-        rear_wheels_drive.stop()
-        front_steering.turn_straight()
+        car.drive_parking()
