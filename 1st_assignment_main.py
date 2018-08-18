@@ -55,7 +55,34 @@ class Car(object):
     # =======================================================================
     def assignment_main(self):
         # Implement the assignment code here.
-        pass
+        self.rear_wheels_drive.forward_with_speed(30)
+        time.sleep(2)
+        self.rear_wheels_drive.stop()
+        time.sleep(1)
+
+        self.rear_wheels_drive.backward_with_speed(30)
+        time.sleep(2)
+        self.rear_wheels_drive.stop()
+        time.sleep(1)
+
+        self.rear_wheels_drive.forward_with_speed(60)
+        time.sleep(2)
+        self.rear_wheels_drive.stop()
+        time.sleep(1)
+
+        self.rear_wheels_drive.backward_with_speed(60)
+        time.sleep(2)
+        self.rear_wheels_drive.stop()
+        time.sleep(1)
+
+        self.rear_wheels_drive.forward_with_speed(90)
+        time.sleep(2)
+        self.rear_wheels_drive.stop()
+        time.sleep(1)
+
+        self.rear_wheels_drive.backward_with_speed(90)
+        time.sleep(2)
+        self.rear_wheels_drive.stop()
 
     def moduleInitialize(self):
         try:
@@ -72,7 +99,7 @@ class Car(object):
             # ================================================================
             # RGB MODULE DRIVER INITIALIZE
             # ================================================================
-            self.color_getter = RGB_Sensor.TCS34725()
+            # self.color_getter = RGB_Sensor.TCS34725()
 
             # ================================================================
             # FRONT WHEEL DRIVER SETUP
@@ -99,7 +126,7 @@ class Car(object):
             # ================================================================
             # DISABLE RGB MODULE INTERRUPTION
             # ================================================================
-            self.color_getter.set_interrupt(False)
+            # self.color_getter.set_interrupt(False)
 
         except:
             print("MODULE INITIALIZE ERROR")
