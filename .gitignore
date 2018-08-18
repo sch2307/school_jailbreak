@@ -1,5 +1,4 @@
 .idea/*
 config
-L298N/__pycache__
-PCA9685/__pycache__
-__pycache__
+*/__pycache__
+*.pyc
