@@ -45,16 +45,3 @@ class Ultrasonic_Avoidance(object):
             # print 'start = %s'%pulse_start,
             # print 'end = %s'%pulse_end
             return -1
-
-    def less_than(self, alarm_gate):
-        dis = self.get_distance()
-        status = 0
-        if 0 <= dis <= alarm_gate:
-            status = 1
-        elif dis > alarm_gate:
-            status = 0
-        else:
-            status = -1
-        # print 'distance =',dis
-        # print 'status =',status
-        return status
