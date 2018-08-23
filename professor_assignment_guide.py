@@ -50,8 +50,12 @@ class Car(object):
         self.backward_speed = 32
 
     def drive_parking(self):
+        # front wheels center allignment
         self.front_steering.turn_straight()
+
+        # power down both Wheels
         self.rear_wheels_drive.stop()
+        self.rear_wheels_drive.power_down()
 
     def first_main(self):
         # front_wheels center allignment
@@ -59,11 +63,36 @@ class Car(object):
 
         # forward-assignment
         self.rear_wheels_drive.forward_with_speed(30)
-        time.sleep(2) #30-2s
+        for i in range(15): # 30-2s
+            if self.distance_detector.get_distance() < 20:
+                print("1st Avoidance Step")
+                self.rear_wheels_drive.forward_with_speed(5)
+                time.sleep(0.1)
+                self.rear_wheels_drive.stop()
+                time.sleep(0.1)
+                break
+            time.sleep(0.1)
         self.rear_wheels_drive.forward_with_speed(60)
-        time.sleep(2) #60-2s
+        for i in range(15):
+            if self.distance_detector.get_distance() < 30:
+                print("2nd Avoidance Step")
+                self.rear_wheels_drive.forward_with_speed(5)
+                time.sleep(0.1)
+                self.rear_wheels_drive.stop()
+                time.sleep(0.1)
+                break
+            time.sleep(0.1)
+
         self.rear_wheels_drive.forward_with_speed(90)
-        time.sleep(2) #90-2s
+        for i in range(15):
+            if self.distance_detector.get_distance() < 40:
+                print("3rd Avoidance Step")
+                self.rear_wheels_drive.forward_with_speed(5)
+                time.sleep(0.1)
+                self.rear_wheels_drive.stop()
+                time.sleep(1)
+                break
+            time.sleep(0.1)
 
         # backward-assignment
         self.rear_wheels_drive.backward_with_speed(30)
@@ -194,10 +223,12 @@ class Car(object):
 if __name__ == "__main__":
     try:
         car = Car()
+        # car.ultra_test()
         car.first_main() #1st_assignment
-        car.lineFollower_main() #2nd-3rd assignment
+        # car.lineFollower_main() #2nd-3rd assignment
 
     except KeyboardInterrupt:
         # when the Ctrl+C key has been pressed,
         # the moving object will be stopped
         car.drive_parking()
+        GPIO.cleanup()

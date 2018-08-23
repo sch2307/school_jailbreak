@@ -69,6 +69,13 @@ class Rear_Wheels(object):
         if self._DEBUG:
             print(self._DEBUG_INFO, 'Stop')
 
+    def power_down(self):
+        """ Down has motor power """
+        self.left_wheel.power_down()
+        self.right_wheel.power_down()
+        if self._DEBUG:
+            print(self._DEBUG_INFO, 'Down has motor power')
+
     def forward_with_speed(self, speed_value):
         """ Move both wheels forward with speed """
         # Setup motor speed

@@ -91,6 +91,13 @@ class Motor(object):
             print(self._DEBUG_INFO, 'Motor stop')
         self.speed = 0
 
+    def power_down(self):
+        """ Down the motor power """
+        GPIO.output(self.forward_direction_channel, GPIO.LOW)
+        GPIO.output(self.backward_direction_channel, GPIO.LOW)
+        if self._DEBUG:
+            print(self._DEBUG_INFO, 'Motor power has down')
+
     @property
     def offset(self):
         return self._offset
