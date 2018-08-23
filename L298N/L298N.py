@@ -61,7 +61,7 @@ class Motor(object):
 
     def forward(self):
         """ Set the motor direction to forward """
-        if (self.forward_offset ^ self._is_left) == 0:
+        if (self.forward_offset ^ self._is_left) != True:
             GPIO.output(self.forward_direction_channel, GPIO.HIGH)
             GPIO.output(self.backward_direction_channel, GPIO.LOW)
         else:
@@ -74,7 +74,7 @@ class Motor(object):
 
     def backward(self):
         """ Set the motor direction to backward """
-        if (self.backward_offset ^ (not self._is_left)) == 0:
+        if (self.backward_offset ^ (not self._is_left)) != True:
             GPIO.output(self.forward_direction_channel, GPIO.LOW)
             GPIO.output(self.backward_direction_channel, GPIO.HIGH)
         else:
