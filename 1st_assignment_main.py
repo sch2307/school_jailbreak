@@ -1,8 +1,8 @@
 #########################################################################
 # Date: 2018/08/09
 # file name: 1st_assignment_main.py
-# Purpose: this code has been generated for the 4WD moving
-#         object to perform the project with ultra sensor
+# Purpose: this code has been generated for the 4 wheels drive body
+# moving object to perform the project with ultra sensor
 # this code is used for the student only
 #########################################################################
 
@@ -46,8 +46,12 @@ class Car(object):
         self.moduleInitialize()
 
     def drive_parking(self):
+        # front wheels center allignment
         self.front_steering.turn_straight()
+
+        # power down both wheels
         self.rear_wheels_drive.stop()
+        self.rear_wheels_drive.power_down()
 
     # =======================================================================
     # 1ST_ASSIGNMENT_CODE
