@@ -69,28 +69,18 @@ class SEN040134_Tracking(object):
             digital_list.append(0 if temp == 1 else 1)
         return digital_list
 
-    def found_line_in(self, timeout):
-        if isinstance(timeout, int) or isinstance(timeout, float):
-            pass
-        else:
-            raise ValueError("timeout must be integer or float")
-
-        time_start = time.time()
-        time_during = 0
-        while time_during < timeout:
-            lt_status = self.read_digital()
-            if 1 in lt_status:
-                return lt_status
-            time_now = time.time()
-            time_during = time_now - time_start
+    def check_line_in(self):
+        lt_status = self.read_digital()
+        if 1 in lt_status:
+            return lt_status
         return False
 
-    def wait_tile_status(self, status):
+    def check_tile_status(self, status):
         lt_status = self.read_digital()
         if lt_status in status:
             return True
 
-    def wait_tile_center(self):
+    def check_tile_center(self):
         lt_status = self.read_digital()
         if lt_status[2] == 1:
             return True
