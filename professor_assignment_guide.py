@@ -215,7 +215,8 @@ class Car(object):
             # ================================================================
             self.color_getter.set_interrupt(False)
 
-        except:
+        except Exception as e:
+            print(e)
             print("MODULE INITIALIZE ERROR")
             print("CONTACT TO Kookmin Univ. Teaching Assistant")
 
@@ -223,7 +224,6 @@ class Car(object):
 if __name__ == "__main__":
     try:
         car = Car()
-        # car.ultra_test()
         car.first_main() #1st_assignment
         # car.lineFollower_main() #2nd-3rd assignment
 
