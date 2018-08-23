@@ -47,12 +47,12 @@ class Motor(object):
 
     @speed.setter
     def speed(self, speed):
-        """ Set Speed with giving value """
+        """ Set Speed with given value """
         if speed not in range(0, 101):
             raise ValueError('speed ranges from 0 to 100, not "{0}"'.format(speed))
         if not callable(self._pwm):
             raise ValueError('pwm is not callable, please set Motor.pwm to a pwm control function '
-                             'with only 1 veriable speed')
+                             'with only 1 variable speed')
 
         #if self._DEBUG
         print(self._DEBUG_INFO, 'Set speed to: ', speed)
