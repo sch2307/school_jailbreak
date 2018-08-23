@@ -118,6 +118,12 @@ class Front_Wheels(object):
         self.wheel.offset = self.turning_offset
         self.turn_straight()
 
+    def pwm_reset(self):
+        """ Resetting the PCA9685 module """
+        if self._DEBUG:
+            print(self._DEBUG_INFO, 'TEST')
+        self.wheel.reset()
+
     def calibration(self):
         """ Get the front wheels to the calibration position. """
         if self._DEBUG:

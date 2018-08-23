@@ -53,6 +53,9 @@ class Car(object):
         # front wheels center allignment
         self.front_steering.turn_straight()
 
+        # resetting the PCA9685 module
+        self.front_steering.pwm_reset()
+
         # power down both Wheels
         self.rear_wheels_drive.stop()
         self.rear_wheels_drive.power_down()

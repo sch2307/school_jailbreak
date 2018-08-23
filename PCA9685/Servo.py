@@ -28,6 +28,9 @@ class Servo(object):
     def setup(self):
         self.pwm.setup()
 
+    def reset(self):
+        self.pwm.write_reset()
+
     def _angle_to_analog(self, angle):
         """ Calculate 12-bit analog value from giving angle """
         pulse_wide = self.pwm.map(angle, 0, 180, self._MIN_PULSE_WIDTH, self._MAX_PULSE_WIDTH)
