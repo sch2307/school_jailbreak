@@ -69,18 +69,23 @@ class SEN040134_Tracking(object):
             digital_list.append(0 if temp == 1 else 1)
         return digital_list
 
-    def check_line_in(self):
+    def is_in_line(self):
         lt_status = self.read_digital()
         if 1 in lt_status:
-            return lt_status
-        return False
-
-    def check_tile_status(self, status):
-        lt_status = self.read_digital()
-        if lt_status in status:
             return True
+        else:
+            return False
 
-    def check_tile_center(self):
+    def is_equal_status(self, status):
+        lt_status = self.read_digital()
+        if lt_status == status:
+            return True
+        else:
+            return False
+
+    def is_center(self):
         lt_status = self.read_digital()
         if lt_status[2] == 1:
             return True
+        else:
+            return False
