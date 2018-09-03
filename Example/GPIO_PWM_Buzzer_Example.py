@@ -4,13 +4,12 @@ Buzzer 를 제어하기 위해 RPi.GPIO 모듈을 GPIO로 import 합니다.
 sleep 함수를 사용하기 위해서 time 모듈을 import 합니다.
 """
 import time
-
 import RPi.GPIO as GPIO
 
-# 18은 broadcom 사의 GPIO핀 번호를 의미합니다.
+# Raspberry Pi의 핀 번호를 의미합니다.
 buzzer_pin = 8
 
-# BCM GPIO 핀 번호를 사용하도록 설정합니다.
+# Raspberry Pi의 핀 순서를 사용하도록 설정합니다.
 GPIO.setmode(GPIO.BOARD)
 
 """
@@ -28,7 +27,6 @@ GPIO.setup(buzzer_pin, GPIO.OUT)
 try:
     p = GPIO.PWM(buzzer_pin, 100)
     p.start(5)     # start the PWM on 100% duty cycle
-    # p.ChangeDutyCycle(5)  # change the duty cycle to 90%
 
     for i in range(8):
         print (i + 1)

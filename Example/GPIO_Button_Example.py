@@ -2,8 +2,10 @@
 import RPi.GPIO as GPIO
 import time
 
-# BCM GPIO핀 27번을 버튼 입력으로 사용합니다.
+# Raspberry Pi 3번 핀을 버튼 입력으로 사용합니다.
 button_pin = 3
+
+# Raspberry Pi 보드의 핀 순서를 사용합니다.
 GPIO.setmode(GPIO.BOARD)
 
 # button_pin을 GPIO 입력으로 설정합니다.
@@ -22,9 +24,8 @@ try:
         print(buttonInput)
 
 except KeyboardInterrupt:
-    pass
+    GPIO.cleanup()
 
 """
 KeyboardInterrupt가 발생하면 핀 설정 상태를 초기화 합니다.
 """
-GPIO.cleanup()

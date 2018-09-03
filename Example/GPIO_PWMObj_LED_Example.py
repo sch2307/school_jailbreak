@@ -4,24 +4,19 @@ LED를 제어하기 위해 RPi.GPIO 모듈을 GPIO로 import 합니다.
 sleep 함수를 사용하기 위해서 time 모듈을 import 합니다.
 """
 import time
-
 import RPi.GPIO as GPIO
 
-# 18은 broadcom 사의 GPIO핀 번호를 의미합니다.
-led_pinG = 37
+# Raspberry Pi 핀의 35 번 핀을 led 출력으로 사용합니다.
 led_pinR = 35
-led_pinB = 33
 
-# BCM GPIO 핀 번호를 사용하도록 설정합니다.
+# Raspberry Pi 핀 순서를 사용하도록 설정합니다.
 GPIO.setmode(GPIO.BOARD)
 
 """
 led_pin을 GPIO 출력으로 설정합니다. 이를 통해 led_pin으로
 True 혹은 False를 쓸 수 있게 됩니다.
 """
-# GPIO.setup(led_pinR, GPIO.OUT)
-# GPIO.setup(led_pinG, GPIO.OUT)
-GPIO.setup(led_pinB, GPIO.OUT)
+GPIO.setup(led_pinR, GPIO.OUT)
 
 """
 led_pin 으로 출력되는 주파수를 100Hz로 설정한 PWM 객체를 생성합니다.
@@ -30,7 +25,7 @@ led_pin 으로 출력되는 주파수를 100Hz로 설정한 PWM 객체를 생성
 인자로 넘어가는 0은 PWM 한 파형 당 HIGH 구간의 길이를 의미하며
 0.0 ~ 100.0 사이의 값을 가질 수 있습니다.
 """
-pwm = GPIO.PWM(led_pinB, 100)
+pwm = GPIO.PWM(led_pinR, 100)
 pwm.start(0)
 
 try:

@@ -1,21 +1,23 @@
 # coding=utf-8
 import time
-
 import RPi.GPIO as GPIO
 
-# BCM GPIO핀 27번을 버튼 입력으로 사용합니다.
+# Raspberry Pi 3번 핀을 버튼 입력으로 사용합니다.
+# 35번 핀을 LED 출력으로 사용합니다.
 button_pin = 3
-led_pinG = 37
 led_pinR = 35
-led_pinB = 33
 
+# Raspberry Pi 핀 순서를 사용하도록 설정합니다.
 GPIO.setmode(GPIO.BOARD)
 
 # button_pin을 GPIO 입력으로 설정합니다.
+# led_pin을 GPIO 출력으로 설정합니다.
 GPIO.setup(button_pin, GPIO.IN)
 GPIO.setup(led_pinR, GPIO.OUT)
 
+# led_pin을 100Hz의 주파수로 제어하는 PWM 객체를 생성합니다.
 pwm = GPIO.PWM(led_pinR, 100)
+# dutycycle 은 0으로 설정하고 제어를 시작합니다.
 pwm.start(0)
 
 try:
@@ -50,10 +52,9 @@ try:
 
 
 except KeyboardInterrupt:
-    pass
+    pwm.stop()
+    GPIO.cleanup()
 
 """
 KeyboardInterrupt가 발생하면 핀 설정 상태를 초기화 합니다.
 """
-pwm.stop()
-GPIO.cleanup()
