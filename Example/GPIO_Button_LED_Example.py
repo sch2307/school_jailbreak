@@ -30,11 +30,11 @@ try:
         """
         button_pin 값을 읽어 buttonInput 에 저장합니다.
         """
-        buttonInput = GPIO.input(button_pin)
+        button_input = GPIO.input(button_pin)
 
 
         # 버튼이 눌려져 있는 상태인지 계속해서 확인하는 이벤트 루프
-        if not buttonInput:
+        if not button_input:
             print("Button Pressed")
 
             for t_high in range(0, 101, 1):
