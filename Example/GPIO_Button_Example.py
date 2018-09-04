@@ -16,12 +16,16 @@ try:
     계속 반복해서 button_pin의 상태를 읽어 
     buttonInput 변수에 저장합니다.
     '''
+    before_input = 0
     while True:
         """
         button_pin 값을 읽어 buttonInput 에 저장합니다.
         """
-        buttonInput = GPIO.input(button_pin)
-        print(buttonInput)
+        button_input = GPIO.input(button_pin)
+        if (button_input != before_input):
+            print(button_input)
+        before_input = button_input
+
 
 except KeyboardInterrupt:
     GPIO.cleanup()
