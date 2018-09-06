@@ -1,3 +1,10 @@
+#########################################################################
+# Date: 2018/09/07
+# file name: GPIO_PWM_Buzzer_Example.py
+# Purpose: this code has been generated for control Buzzer Module
+# if program is run then buzzer will make sound!
+#########################################################################
+
 # coding=utf-8
 """
 Buzzer 를 제어하기 위해 RPi.GPIO 모듈을 GPIO로 import 합니다.
@@ -26,7 +33,7 @@ GPIO.setup(buzzer_pin, GPIO.OUT)
 
 try:
     p = GPIO.PWM(buzzer_pin, 100)
-    p.start(5)     # start the PWM on 100% duty cycle
+    p.start(5)     # start the PWM on 5% duty cycle
 
     for i in range(8):
         print (i + 1)

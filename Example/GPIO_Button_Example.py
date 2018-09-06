@@ -1,3 +1,10 @@
+#########################################################################
+# Date: 2018/09/07
+# file name: GPIO_Button_Example.py
+# Purpose: This code has been generated for control Button Module
+# if Button is Pressed then console print '0' else console print '1'
+#########################################################################
+
 # coding=utf-8
 import RPi.GPIO as GPIO
 import time

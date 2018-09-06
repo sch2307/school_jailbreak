@@ -1,3 +1,10 @@
+#########################################################################
+# Date: 2018/09/07
+# file name: GPIO_LED_On_Off_Example.py
+# Purpose: this code has been generated for control LED Module
+# if this program is run then LED will blink 1Hz
+#########################################################################
+
 # coding=utf-8
 """
 LED를 제어하기 위해 RPi.GPIO 모듈을 GPIO로 import 합니다.
@@ -8,7 +15,7 @@ import time
 import RPi.GPIO as GPIO
 
 # Raspberry Pi 보드의 led_pin을 사용합니다.
-led_pinR = 35
+led_pinR = 37
 
 # Raspberry Pi 보드 핀 순서를 사용하도록 설정합니다.
 GPIO.setmode(GPIO.BOARD)

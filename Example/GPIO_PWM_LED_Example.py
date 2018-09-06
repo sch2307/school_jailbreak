@@ -1,3 +1,10 @@
+#########################################################################
+# Date: 2018/09/07
+# file name: GPIO_PWM_LED_Example.py
+# Purpose: this code has been generated for contorl LED Module
+# if program is run then LED will blink!
+#########################################################################
+
 # coding=utf-8
 """
 LED를 제어하기 위해 RPi.GPIO 모듈을 GPIO로 import 합니다.
@@ -6,8 +13,8 @@ sleep 함수를 사용하기 위해서 time 모듈을 import 합니다.
 import time
 import RPi.GPIO as GPIO
 
-# Raspberry Pi 의 핀 번호를 의미합니다.
-led_pinR = 35
+# Raspberry Pi 의 37번 핀 번호를 의미합니다.
+led_pinR = 37
 
 # Raspberry Pi 의 핀 순서를 사용하도록 설정합니다.
 GPIO.setmode(GPIO.BOARD)

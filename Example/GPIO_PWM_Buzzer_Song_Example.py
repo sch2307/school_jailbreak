@@ -1,3 +1,10 @@
+#########################################################################
+# Date: 2018/08/09
+# file name: GPIO_PWM_Buzzer_Song_Example.py
+# Purpose: this code has been generated for contorl Buzzer Module
+# if program is run then Buzzer make music "school bell is ringing"
+#########################################################################
+
 # coding=utf-8
 """
 Buzzer 를 제어하기 위해 RPi.GPIO 모듈을 GPIO로 import 합니다.
@@ -29,7 +36,7 @@ list = [4, 4, 5, 5, 4, 4, 2, 4, 4, 2, 2, 1, 4, 4, 5, 5, 4, 4, 2, 4, 2, 1, 2, 0]
 
 try:
     p = GPIO.PWM(buzzer_pin, 100)
-    p.start(5)     # start the PWM on 100% duty cycle
+    p.start(5)     # start the PWM on 5% duty cycle
 
     for i in range(len(list)):
         print (i + 1)
