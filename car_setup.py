@@ -141,7 +141,7 @@ class Setup(QWidget):
 
         # Set window
         self.setLayout(main_box)
-        self.setGeometry(300, 300, 500, 400)
+        self.setGeometry(0, 0, 500, 400)
         self.setWindowTitle("Car Setup")
         self.show()
 
