@@ -17,7 +17,7 @@ class fileDB(object):
         try:
             conf = open(self.db, 'r')
             lines = conf.readlines()
-            print(lines)
+            # print(lines)
             conf.close()
             file_len = len(lines)
             flag = False
