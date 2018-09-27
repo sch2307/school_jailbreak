@@ -30,7 +30,7 @@ if __name__ == '__main__':
         driving_controller.stop()
         driving_controller.power_down()
         
-        # Exmaple of Ultrasonic Sensor
+        # Example of Ultrasonic Sensor
         
         distance_detector = Ultrasonic_Sensor.Ultrasonic_Avoidance(35)
         
