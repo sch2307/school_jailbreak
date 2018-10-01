@@ -29,6 +29,11 @@ from TCS34725 import TCS34725_RGB as RGB_Sensor
 from SR02 import SR02_Ultrasonic as Ultrasonic_Sensor
 
 # =======================================================================
+# import ALL method in the PCA9685 Module
+# =======================================================================
+from PCA9685 import PCA9685 as PWM_Controller
+
+# =======================================================================
 # import ALL method in the rear/front Motor Module
 # =======================================================================
 import rear_wheels
@@ -83,7 +88,12 @@ class Car(object):
             # ================================================================
             # DISABLE RGB MODULE INTERRUPTION
             # ================================================================
-            self.color_getter.set_interrupt(False)
+            self.color_getter.set_interrupt(False)\
+
+            # ================================================================
+            # PCA9685(PWM 16-ch Extension Board) MODULE WAKEUP
+            # ================================================================
+            PWM_Controller.PWM().setup()
 
             # ================================================================
             # FRONT WHEEL DRIVER SETUP

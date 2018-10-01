@@ -174,6 +174,7 @@ class PWM(object):
         mode1 = mode1 & ~self._SLEEP
         self._write_byte_data(self._MODE1, mode1)
         time.sleep(0.005)
+
         self._frequency = 60
 
     def write_reset(self):
