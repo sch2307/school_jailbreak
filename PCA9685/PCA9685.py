@@ -1,6 +1,7 @@
 import smbus
 import time
 import math
+import os
 
 
 class PWM(object):
@@ -57,6 +58,60 @@ class PWM(object):
         elif pi_revision == '3 Module B+':
             return 1
 
+    def _get_pi_serial(self):
+        """Gets the serial number of the Raspberry Pi board"""
+        try:
+            prinfo = open('/proc/cpuinfo', 'r')
+            for line in prinfo:
+                if line.startswith('Serial'):
+                    return line[11:-1]
+        except Exception as e:
+            prinfo.close()
+            print(e)
+            print('Exiting...')
+            quit()
+        finally:
+            prinfo.close()
+
+    def _get_file_serial(self):
+        """Gets the serial number of the cpuinfo binary"""
+        try:
+            crinfo = open("./PCA9685/cpuinfo", 'r')
+            for line in crinfo:
+                return line
+        except Exception as e:
+            print(e)
+            print('Exiting...')
+            quit()
+        finally:
+            crinfo.close()
+
+    def _set_file_serial(self):
+        """Sets the serial number of the cpuinfo binary"""
+        try:
+            fser = open("./PCA9685/cpuinfo", 'w')
+            fser.write(self._get_pi_serial())
+        except Exception as e:
+            print(e)
+            print('Exiting...')
+            quit()
+        finally:
+            fser.close()
+
+    def _check_current_serial(self):
+        """Check the current serial number of the cpuinfo binary"""
+        if os.path.isfile("./PCA9685/cpuinfo"):
+            if not(self._get_pi_serial() in self._get_file_serial()):
+                print("MODULE INITIALIZE ERROR")
+                print("[ERROR-102] CONTACT TO Kookmin Univ. Teaching Assistant")
+                return False
+            else:
+                return True
+        else:
+            self._set_file_serial()
+            print("[INFORMATION] Restart Assignment_main Solution")
+            return False
+
     @property
     def _get_pi_revision(self):
         """Gets the version number of the Raspberry Pi board"""
@@ -96,12 +151,15 @@ class PWM(object):
             f.close()
 
     def __init__(self, bus_number=None, address=0x40):
-        self.address = address
-        if bus_number is None:
-            self.bus_number = self._get_bus_number()
+        if self._check_current_serial():
+            self.address = address
+            if bus_number is None:
+                self.bus_number = self._get_bus_number()
+            else:
+                self.bus_number = bus_number
+            self.bus = smbus.SMBus(self.bus_number)
         else:
-            self.bus_number = bus_number
-        self.bus = smbus.SMBus(self.bus_number)
+            quit()
 
     def setup(self):
         """Init the class with bus_number and address"""

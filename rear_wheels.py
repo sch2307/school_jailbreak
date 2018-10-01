@@ -28,8 +28,7 @@ class Rear_Wheels(object):
 
         # PWM Setup
         self.pwm = PCA9685.PWM(bus_number=bus_number)
-        self.pwm.frequency = 60
-    
+
         def _set_a_pwm(value):
             pulse_wide = self.pwm.map(value, 0, 100, 0, 4095)
             self.pwm.write(self.PWM_A, 0, int(pulse_wide))

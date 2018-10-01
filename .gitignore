@@ -1,4 +1,5 @@
 .idea/*
 config
 */__pycache__
+*/cpuinfo
 *.pyc

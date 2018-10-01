@@ -105,7 +105,8 @@ class Car(object):
             # ================================================================
             self.color_getter.set_interrupt(False)
 
-        except:
+        except Exception as e:
+            print(e)
             print("MODULE INITIALIZE ERROR")
             print("CONTACT TO Kookmin Univ. Teaching Assistant")
 
