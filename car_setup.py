@@ -165,6 +165,7 @@ class Setup(QWidget):
             self.db_data["turning_offset"] = int(f.readline().split("= ")[1].rstrip())
             self.db_data["forward_A"] = int(f.readline().split("= ")[1].rstrip())
             self.db_data["forward_B"] = int(f.readline().split("= ")[1].rstrip())
+            self.db_data["debug"] = int(f.readline().split("= ")[1].rstrip())
             f.close()
         
         except FileNotFoundError:
@@ -173,12 +174,14 @@ class Setup(QWidget):
             self.db_data["turning_offset"] = 0
             self.db_data["forward_A"] = 1
             self.db_data["forward_B"] = 0
+            self.db_data["debug"] = 0
             f = open("./config", 'w')
             f.write("# File based database.\n")
             f.write("\n")
             f.write("turning_offset = 0\n")
             f.write("forward_A = 1\n")
             f.write("forward_B = 0\n")
+            f.write("debug = 0\n")
             f.close()
 
     def show_database(self):

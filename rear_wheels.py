@@ -16,7 +16,7 @@ class Rear_Wheels(object):
     _DEBUG = False
     _DEBUG_INFO = 'DEBUG "rear_wheels.py":'
 
-    def __init__(self, debug=False, bus_number=1, db="config"):
+    def __init__(self, bus_number=1, db="config"):
         """ Init the direction channel and pwm channel """
 
         self.db = filedb.fileDB(db=db)
@@ -43,7 +43,7 @@ class Rear_Wheels(object):
 
         self._speed = 0
 
-        self.debug = self.debug
+        self.debug = int(self.db.get("debug", default_value=0))
         if self._DEBUG:
             print(self._DEBUG_INFO, 'Set left wheel to IN1 #%d, IN2 #%d PWM channel to %d' % (self.Motor_IN1, self.Motor_IN2, self.PWM_A))
             print(self._DEBUG_INFO, 'Set right wheel to IN3 #%d, IN4 #%d PWM channel to %d' % (self.Motor_IN3, self.Motor_IN3, self.PWM_B))

@@ -10,7 +10,7 @@ class Front_Wheels(object):
     _DEBUG = False
     _DEBUG_INFO = 'DEBUG "front_wheels.py":'
 
-    def __init__(self, debug=False, db="config", bus_number=1, channel=FRONT_WHEEL_CHANNEL):
+    def __init__(self, db="config", bus_number=1, channel=FRONT_WHEEL_CHANNEL):
         """ setup channels and basic stuff """
         self.db = filedb.fileDB(db=db)
         self._channel = channel
@@ -20,15 +20,15 @@ class Front_Wheels(object):
 
         self.wheel = Servo.Servo(self._channel, bus_number=bus_number, offset=self.turning_offset)
         self.wheel.setup()
-        self.debug = debug
+        self.debug = int(self.db.get("debug", default_value=0))
         if self._DEBUG:
             print(self._DEBUG_INFO, 'Front wheel PWM channel:', self._channel)
             print(self._DEBUG_INFO, 'Front wheel offset value:', self.turning_offset)
 
         self._angle = {"left": self._min_angle, "straight": self._straight_angle, "right": self._max_angle}
         if self._DEBUG:
-            print(self._DEBUG_INFO, 'left angle: %s, straight angle: %s, right angle: %s' % (
-            self._angle["left"], self._angle["straight"], self._angle["right"]))
+            print(self._DEBUG_INFO, 'left angle: {}, straight angle: {}, right angle: {}'
+                  .format(self._angle["left"], self._angle["straight"], self._angle["right"]))
 
     def turn_left(self):
         """ Turn the front wheels left """

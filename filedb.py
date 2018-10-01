@@ -15,7 +15,6 @@ class fileDB(object):
         """Get value by data's name. Default value is for the arguments do not exist"""
         conf = open(self.db, 'r')
         lines = conf.readlines()
-        # print(lines)
         conf.close()
         file_len = len(lines)
         flag = False

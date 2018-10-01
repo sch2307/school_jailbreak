@@ -54,8 +54,8 @@ class Motor(object):
             raise ValueError('pwm is not callable, please set Motor.pwm to a pwm control function '
                              'with only 1 variable speed')
 
-        #if self._DEBUG
-        print(self._DEBUG_INFO, 'Set speed to: ', speed)
+        if self._DEBUG:
+            print(self._DEBUG_INFO, 'Set speed to: ', speed)
         self._speed = speed
         self._pwm(self._speed)
 
@@ -137,5 +137,4 @@ class Motor(object):
     def pwm(self, pwm):
         if self._DEBUG:
             print(self._DEBUG_INFO, 'pwm set')
-        print("PWM Object in", pwm)
         self._pwm = pwm
