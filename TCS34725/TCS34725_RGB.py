@@ -138,15 +138,23 @@ class TCS34725(object):
         if i2c is None:
             from TCS34725 import I2C as i2c
         self._device = i2c.get_i2c_device(address, **kwargs)
+        # Exception distinction
+        self._exception_occur = False
         # Make sure we're connected to the sensor.
-        chip_id = self._readU8(TCS34725_ID)
-        if chip_id != 0x44:
-            raise RuntimeError('Failed to read TCS34725 chip ID, check your wiring.')
-        # Set default integration time and gain.
-        self.set_integration_time(integration_time)
-        self.set_gain(gain)
-        # Enable the device (by default, the device is in power down mode on bootup).
-        self.enable()
+        try:
+            chip_id = self._readU8(TCS34725_ID)
+            if chip_id != 0x44:
+                raise RuntimeError('Failed to read TCS34725 chip ID, check your wiring.')
+            # Set default integration time and gain.
+            self.set_integration_time(integration_time)
+            self.set_gain(gain)
+            # Enable the device (by default, the device is in power down mode on bootup).
+            self.enable()
+        except Exception:
+            self._exception_occur = True
+
+    def get_exception_occur(self):
+        return self._exception_occur
 
     def _readU8(self, reg):
         """Read an unsigned 8-bit register."""

@@ -190,6 +190,13 @@ class Car(object):
             # RGB MODULE DRIVER INITIALIZE
             # ================================================================
             self.color_getter = RGB_Sensor.TCS34725()
+            if self.color_getter.get_exception_occur():
+                print("[ERRNO-101] There is a problem with RGB_Sensor(TCS34725)")
+
+            # ================================================================
+            # DISABLE RGB MODULE INTERRUPTION
+            # ================================================================
+            self.color_getter.set_interrupt(False)
 
             # ================================================================
             # FRONT WHEEL DRIVER SETUP
@@ -199,7 +206,7 @@ class Car(object):
 
             # ================================================================
             # REAR WHEEL DRIVER SETUP
-            # ================================================================
+            # ==================================================6==============
             self.rear_wheels_drive = rear_wheels.Rear_Wheels(db='config')
             self.rear_wheels_drive.ready()
 
@@ -213,15 +220,9 @@ class Car(object):
             # ================================================================
             self.front_steering.turn_straight()
 
-            # ================================================================
-            # DISABLE RGB MODULE INTERRUPTION
-            # ================================================================
-            self.color_getter.set_interrupt(False)
-
         except Exception as e:
-            print(e)
-            print("MODULE INITIALIZE ERROR")
             print("CONTACT TO Kookmin Univ. Teaching Assistant")
+            print("Learn more : " + e)
 
 
 if __name__ == "__main__":
