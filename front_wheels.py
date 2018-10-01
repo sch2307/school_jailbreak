@@ -19,7 +19,7 @@ class Front_Wheels(object):
         self._turning_offset = int(self.db.get('turning_offset', default_value=0))
 
         self.wheel = Servo.Servo(self._channel, bus_number=bus_number, offset=self.turning_offset)
-
+        self.wheel.setup()
         self.debug = debug
         if self._DEBUG:
             print(self._DEBUG_INFO, 'Front wheel PWM channel:', self._channel)

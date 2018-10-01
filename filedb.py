@@ -5,7 +5,6 @@ class fileDB(object):
     """
     def __init__(self, db=None):
         """Init the db_file is a file to save the data."""
-
         # Check if db_file is defined
         if db is not None:
             self.db = db
@@ -14,29 +13,25 @@ class fileDB(object):
 
     def get(self, name, default_value=None):
         """Get value by data's name. Default value is for the arguments do not exist"""
-        try:
-            conf = open(self.db, 'r')
-            lines = conf.readlines()
-            # print(lines)
-            conf.close()
-            file_len = len(lines)
-            flag = False
-            # Find the argument and set the value
-            for i in range(file_len):
-                if lines[i][0] != '#':
-                    if lines[i].split('=')[0].strip() == name:
-                        value = lines[i].split('=')[1].replace(' ', '').strip()
-                        flag = True
-            if flag:
-                return value
-            else:
-                return default_value
-        except:
+        conf = open(self.db, 'r')
+        lines = conf.readlines()
+        # print(lines)
+        conf.close()
+        file_len = len(lines)
+        flag = False
+        # Find the argument and set the value
+        for i in range(file_len):
+            if lines[i][0] != '#':
+                if lines[i].split('=')[0].strip() == name:
+                    value = lines[i].split('=')[1].replace(' ', '').strip()
+                    flag = True
+        if flag:
+            return value
+        else:
             return default_value
 
     def set(self, name, value):
         """Set value by data's name. Or create one if the argument does not exist"""
-
         # Read the file
         conf = open(self.db, 'r')
         lines = conf.readlines()
