@@ -1,5 +1,6 @@
 import sys
 from PyQt5.QtWidgets import *
+from PCA9685 import PCA9685 as PWM_Controller
 import front_wheels
 import rear_wheels
 
@@ -120,18 +121,18 @@ class Setup(QWidget):
 
         # link run button in run_button_clicked function
         run_button.clicked.connect(lambda: self.run_button_clicked())
-        
-        # link save button in save_button_clicked function 
+
+        # link save button in save_button_clicked function
         save_button.clicked.connect(lambda: self.save_button_clicked(True))
-        
+
         # link stop button in stop_button_clicked function
         stop_button.clicked.connect(lambda: self.stop_button_clicked())
-        
+
         # link reverse button in left/right_reverse_clicked function
         left_reverse.clicked.connect(lambda: self.left_reverse_clicked())
         right_reverse.clicked.connect(lambda: self.right_reverse_clicked())
-        
-        # link servo_left/right button in left/right_servo_clicked function 
+
+        # link servo_left/right button in left/right_servo_clicked function
         servo_left.clicked.connect(lambda: self.servo_clicked("left"))
         servo_right.clicked.connect(lambda: self.servo_clicked("right"))
 
@@ -146,6 +147,9 @@ class Setup(QWidget):
         self.show()
 
     def init_modules(self):
+        # PCA9685(PWM 16-ch Extension Board) Initialize
+        PWM_Controller.PWM().setup()
+
         # front_wheels PWM Driver Initialize
         self.fr_wheels = front_wheels.Front_Wheels(db='config')
         self.fr_wheels.ready()
@@ -167,7 +171,7 @@ class Setup(QWidget):
             self.db_data["forward_B"] = int(f.readline().split("= ")[1].rstrip())
             self.db_data["debug"] = int(f.readline().split("= ")[1].rstrip())
             f.close()
-        
+
         except FileNotFoundError:
             print("Config File Not Exist")
             print("Init With Default Value")
@@ -204,8 +208,11 @@ class Setup(QWidget):
         temp = "forward_B = "
         temp += "1\n" if self.db_data["forward_B"] == 1 else "0\n"
         f.write(temp)
+        temp = "debug = "
+        temp += "0\n"
+        f.write(temp)
         f.close()
-        
+
         if is_exit is True:
             self.rear_wheels_drive.stop()
             exit()
