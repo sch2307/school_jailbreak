@@ -10,6 +10,7 @@
 # import GPIO library and time module
 # =======================================================================
 import RPi.GPIO as GPIO
+
 # =======================================================================
 # import ALL method in the SEN040134 Tracking Module
 # =======================================================================
@@ -43,6 +44,15 @@ GPIO.setwarnings(False)
 
 
 class MyCar(object):
+
+    """ Initialize Speed Value """
+    SLOWEST = 20
+    SLOWER = 25
+    SLOW = 35
+    NORMAL = 40
+    FAST = 65
+    FASTER = 80
+    FASTEST = 100
 
     def __init__(self):
         try:
@@ -100,7 +110,7 @@ class MyCar(object):
             print("Learn more : " + e)
 
     def drive_parking(self):
-        # front wheels center allignment
+        # front wheels center alignment
         self.steering.turn_straight()
 
         # power down both wheels

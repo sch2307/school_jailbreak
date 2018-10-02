@@ -5,6 +5,8 @@ import filedb
 
 class Rear_Wheels(object):
     """ Back wheels control class """
+
+    """ Initialize motor pin """
     Motor_IN1 = 11
     Motor_IN2 = 12
     Motor_IN3 = 13
@@ -48,20 +50,6 @@ class Rear_Wheels(object):
             print(self._DEBUG_INFO, 'Set left wheel to IN1 #%d, IN2 #%d PWM channel to %d' % (self.Motor_IN1, self.Motor_IN2, self.PWM_A))
             print(self._DEBUG_INFO, 'Set right wheel to IN3 #%d, IN4 #%d PWM channel to %d' % (self.Motor_IN3, self.Motor_IN3, self.PWM_B))
 
-    def forward(self):
-        """ Move both wheels forward """
-        self.left_wheel.forward()
-        self.right_wheel.forward()
-        if self._DEBUG:
-            print(self._DEBUG_INFO, 'Running forward')
-
-    def backward(self):
-        """ Move both wheels backward """
-        self.left_wheel.backward()
-        self.right_wheel.backward()
-        if self._DEBUG:
-            print(self._DEBUG_INFO, 'Running backward')
-
     def stop(self):
         """ Stop both wheels """
         self.left_wheel.stop()
@@ -76,7 +64,7 @@ class Rear_Wheels(object):
         if self._DEBUG:
             print(self._DEBUG_INFO, 'Down has motor power')
 
-    def forward_with_speed(self, speed_value):
+    def go_forward(self, speed_value):
         """ Move both wheels forward with speed """
         # Setup motor speed
         self._speed = speed_value
@@ -87,7 +75,7 @@ class Rear_Wheels(object):
         if self._DEBUG:
             print(self._DEBUG_INFO, 'Running forward with speed')
 
-    def backward_with_speed(self, speed_value):
+    def go_backward(self, speed_value):
         """ Move both wheels backward with speed """
         # Setup motor speed
         self._speed = speed_value

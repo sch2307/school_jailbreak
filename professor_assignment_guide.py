@@ -23,36 +23,36 @@ class AssignmentMain(object):
         self.myCar.drive_parking()
 
     def first_main(self):
-        # front_wheels center allignment
+        # front_wheels center alignment
         self.myCar.steering.turn_straight()
 
         # forward-assignment
-        self.myCar.accelerator.forward_with_speed(30)
+        self.myCar.accelerator.go_forward(30)
         for i in range(15): # 30-2s
             if self.myCar.distance_detector.get_distance() < 20:
                 print("1st Avoidance Step")
-                self.myCar.accelerator.forward_with_speed(5)
+                self.myCar.accelerator.go_forward(5)
                 time.sleep(0.1)
                 self.myCar.accelerator.stop()
                 time.sleep(0.1)
                 break
             time.sleep(0.1)
-        self.myCar.accelerator.forward_with_speed(60)
+        self.myCar.accelerator.go_forward(60)
         for i in range(15):
             if self.myCar.distance_detector.get_distance() < 30:
                 print("2nd Avoidance Step")
-                self.myCar.accelerator.forward_with_speed(5)
+                self.myCar.accelerator.go_forward(5)
                 time.sleep(0.1)
                 self.myCar.accelerator.stop()
                 time.sleep(0.1)
                 break
             time.sleep(0.1)
 
-        self.myCar.accelerator.forward_with_speed(90)
+        self.myCar.accelerator.go_forward(90)
         for i in range(15):
             if self.myCar.distance_detector.get_distance() < 40:
                 print("3rd Avoidance Step")
-                self.myCar.accelerator.forward_with_speed(5)
+                self.myCar.accelerator.go_forward(5)
                 time.sleep(0.1)
                 self.myCar.accelerator.stop()
                 time.sleep(1)
@@ -60,12 +60,15 @@ class AssignmentMain(object):
             time.sleep(0.1)
 
         # backward-assignment
-        self.myCar.accelerator.backward_with_speed(30)
-        time.sleep(2) #30-2s
-        self.myCar.accelerator.backward_with_speed(60)
-        time.sleep(2) #60-2s
-        self.myCar.accelerator.backward_with_speed(90)
-        time.sleep(2) #90-2s
+        self.myCar.accelerator.go_backward(30)
+        """ 30 speed - 2 sec """
+        time.sleep(2)
+        """ 60 speed - 2 sec """
+        self.myCar.accelerator.go_backward(60)
+        time.sleep(2)
+        """ 90 speed - 2 sec """
+        self.myCar.accelerator.go_backward(90)
+        time.sleep(2)
 
         # stop
         self.myCar.accelerator.stop()
@@ -80,7 +83,7 @@ class AssignmentMain(object):
         c_step = 30
         d_step = 45
 
-        self.myCar.accelerator.forward_with_speed(self.forward_speed)
+        self.myCar.accelerator.go_forward(self.forward_speed)
 
         while True:
             lt_status_now = self.myCar.line_detector.read_digital()
@@ -110,7 +113,7 @@ class AssignmentMain(object):
                 turning_angle = int(90 + step)
             elif lt_status_now == [0, 0, 0, 0, 0]:
                 # rgb sensor check
-                self.myCar.accelerator.forward_with_speed(self.forward_speed)
+                self.myCar.accelerator.go_forward(self.forward_speed)
                 time.sleep(0.1)
                 self.myCar.accelerator.stop()
                 if self.myCar.line_detector.read_digital() == [0, 0, 0, 0, 0]:
@@ -121,16 +124,16 @@ class AssignmentMain(object):
                     self.myCar.steering.turn(turning_angle)
                     time.sleep(0.1)
                     while sum(self.myCar.line_detector.read_digital()) <= 1:
-                        self.myCar.accelerator.backward_with_speed(self.backward_speed)
+                        self.myCar.accelerator.go_backward(self.backward_speed)
                         time.sleep(0.1)
                     self.myCar.accelerator.stop()
                     turning_angle = store_angle
                     self.myCar.steering.turn(turning_angle)
                     time.sleep(0.1)
-                    self.myCar.accelerator.forward_with_speed(self.forward_speed)
+                    self.myCar.accelerator.go_forward(self.forward_speed)
                     time.sleep(0.4)
                 else:
-                    self.myCar.accelerator.forward_with_speed(self.forward_speed)
+                    self.myCar.accelerator.go_forward(self.forward_speed)
                     print("COLOR DETECT")
 
             self.myCar.steering.turn(turning_angle)
@@ -141,9 +144,9 @@ if __name__ == "__main__":
     try:
         Assignment_main = AssignmentMain()
         '''1st assignment'''
-        Assignment_main.first_main()
+        # Assignment_main.first_main()
         '''2nd-3rd assignment'''
-        # Assignment_main.lineFollower_main()
+        Assignment_main.lineFollower_main()
 
     except KeyboardInterrupt:
         # when the Ctrl+C key has been pressed,
