@@ -88,7 +88,7 @@ class Car(object):
             # ================================================================
             # DISABLE RGB MODULE INTERRUPTION
             # ================================================================
-            self.color_getter.set_interrupt(False)\
+            self.color_getter.set_interrupt(False)
 
             # ================================================================
             # PCA9685(PWM 16-ch Extension Board) MODULE WAKEUP
