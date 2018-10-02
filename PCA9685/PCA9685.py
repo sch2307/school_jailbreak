@@ -177,15 +177,6 @@ class PWM(object):
 
         self._frequency = 60
 
-    def write_reset(self):
-        """ Reset the PCA9685 module """ 
-        if self._DEBUG:
-            print(self._DEBUG_INFO, 'Resetting the PCA9685 module')
-        
-        self._write_byte_data(self.LEDALL_ON_L, 0x0)
-        self._write_byte_data(self.LEDALL_OFF_L, 0x1000)
-        time.sleep(0.005)
-
     def _write_byte_data(self, reg, value):
         """Write data to I2C with self.address"""
         if self._DEBUG:
@@ -270,7 +261,7 @@ class PWM(object):
         if self._DEBUG:
             print(self._DEBUG_INFO, 'Final pre-scale: %d' % prescale)
 
-        old_mode = self._read_byte_data(self._MODE1);
+        old_mode = self._read_byte_data(self._MODE1)
         new_mode = (old_mode & 0x7F) | 0x10
         self._write_byte_data(self._MODE1, new_mode)
         self._write_byte_data(self._PRESCALE, int(math.floor(prescale)))
