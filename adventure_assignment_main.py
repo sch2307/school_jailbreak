@@ -12,8 +12,8 @@ import time
 
 class AssignmentMain(object):
 
-    def __init__(self):
-        self.myCar = MyCar()
+    def __init__(self, car_name):
+        self.myCar = MyCar(car_name)
 
     def drive_parking(self):
         self.myCar.drive_parking()

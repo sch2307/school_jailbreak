@@ -12,8 +12,8 @@ import time
 
 class AssignmentMain(object):
 
-    def __init__(self):
-        self.myCar = MyCar()
+    def __init__(self, car_name):
+        self.myCar = MyCar(car_name)
 
         # Variable Setup
         self.forward_speed = 35
@@ -60,8 +60,8 @@ class AssignmentMain(object):
             time.sleep(0.1)
 
         # backward-assignment
-        self.myCar.accelerator.go_backward(30)
         """ 30 speed - 2 sec """
+        self.myCar.accelerator.go_backward(30)
         time.sleep(2)
         """ 60 speed - 2 sec """
         self.myCar.accelerator.go_backward(60)

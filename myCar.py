@@ -54,7 +54,7 @@ class MyCar(object):
     FASTER = 80
     FASTEST = 100
 
-    def __init__(self):
+    def __init__(self, carName):
         try:
             # ================================================================
             # ULTRASONIC MODULE DRIVER INITIALIZE
@@ -104,6 +104,11 @@ class MyCar(object):
             # SET FRONT WHEEL CENTOR ALLIGNMENT
             # ================================================================
             self.steering.turn_straight()
+
+            # ================================================================
+            # SET APPOINTED OF CAR NAME
+            # ================================================================
+            self.car_name = carName
 
         except Exception as e:
             print("CONTACT TO Kookmin Univ. Teaching Assistant")
