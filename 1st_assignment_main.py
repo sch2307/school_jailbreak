@@ -29,7 +29,7 @@ class AssignmentMain(object):
 
 if __name__ == "__main__":
     try:
-        Assignment_main = AssignmentMain()
+        Assignment_main = AssignmentMain("CarName")
         Assignment_main.assignment_main()
 
     except KeyboardInterrupt:

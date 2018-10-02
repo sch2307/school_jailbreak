@@ -81,7 +81,8 @@ class MyCar(object):
             # ================================================================
             # PCA9685(PWM 16-ch Extension Board) MODULE WAKEUP
             # ================================================================
-            PWM_Controller.PWM().setup()
+            self.carEngine = PWM_Controller.PWM()
+            self.carEngine.startup()
 
             # ================================================================
             # FRONT WHEEL DRIVER SETUP

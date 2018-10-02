@@ -177,6 +177,9 @@ class PWM(object):
 
         self._frequency = 60
 
+    def startup(self):
+        self.setup()
+
     def _write_byte_data(self, reg, value):
         """Write data to I2C with self.address"""
         if self._DEBUG:

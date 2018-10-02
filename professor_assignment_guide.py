@@ -142,7 +142,7 @@ class AssignmentMain(object):
 
 if __name__ == "__main__":
     try:
-        Assignment_main = AssignmentMain()
+        Assignment_main = AssignmentMain("CarName")
         '''1st assignment'''
         # Assignment_main.first_main()
         '''2nd-3rd assignment'''
