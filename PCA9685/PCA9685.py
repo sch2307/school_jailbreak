@@ -269,6 +269,10 @@ class PWM(object):
         time.sleep(0.005)
         self._write_byte_data(self._MODE1, old_mode | 0x80)
 
+    def sleepTest(self):
+        self._write_byte_data(self._ALL_LED_ON_L, 0x0)
+        time.sleep(1)
+
     def write(self, channel, on, off):
         """Set on and off value on specific channel"""
         if self._DEBUG:
