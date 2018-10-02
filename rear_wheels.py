@@ -153,13 +153,13 @@ class Rear_Wheels(object):
 
     def cali_left(self):
         """ Reverse the left wheels forward direction in calibration """
-        self.cali_forward_A = (1 + self.cali_forward_A) & 1
+        self.cali_forward_A = not self.cali_forward_A
         self.left_wheel.offset = self.cali_forward_A
         self.forward()
 
     def cali_right(self):
         """ Reverse the right wheels forward direction in calibration """
-        self.cali_forward_B = (1 + self.cali_forward_B) & 1
+        self.cali_forward_B = not self.cali_forward_B
         self.right_wheel.offset = self.cali_forward_B
         self.forward()
 
