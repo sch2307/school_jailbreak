@@ -14,11 +14,11 @@ if __name__ == '__main__':
         # Example Of Real Motor Control
         accelerator = rear_wheels.Rear_Wheels(db='config')
         accelerator.ready()
-        accelerator.forward_with_speed(50)
+        accelerator.go_forward(50)
         time.sleep(1)
         accelerator.stop()
         time.sleep(1)
-        accelerator.backward_with_speed(50)
+        accelerator.go_backward(50)
         time.sleep(1)
 
         accelerator.stop()
