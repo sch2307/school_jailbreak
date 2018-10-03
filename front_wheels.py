@@ -29,11 +29,15 @@ class Front_Wheels(object):
             print(self._DEBUG_INFO, 'left angle: {}, straight angle: {}, right angle: {}'
                   .format(self._angle["left"], self._angle["straight"], self._angle["right"]))
 
-    def turn_left(self):
+    def turn_left(self, angle):
         """ Turn the front wheels left """
+        """ Available angle : 0 ~ 89 degrees """
         if self._DEBUG:
             print(self._DEBUG_INFO, "Turn left")
-        self.wheel.write(self._angle["left"])
+        if 0 <= angle < 90: # max angle
+            if angle < self._angle["left"]:
+                angle = self._angle["left"]
+            self.wheel.write(angle)
 
     def center_alignment(self):
         """ Turn the front wheels back straight """
@@ -43,9 +47,13 @@ class Front_Wheels(object):
 
     def turn_right(self, angle):
         """ Turn the front wheels right """
+        """ Available angle : 91 ~ 179 degrees """
         if self._DEBUG:
             print(self._DEBUG_INFO, "Turn right")
-        self.wheel.write(self._angle["right"])
+        if 90 < angle < 180: # max angle
+            if angle > self._angle["right"]:
+                angle = self._angle["right"]
+            self.wheel.write(angle)
 
     def turn(self, angle):
         """ Turn the front wheels to the giving angle """
