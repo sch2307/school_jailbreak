@@ -222,7 +222,6 @@ class Setup(QWidget):
             self.run_button_clicked()
 
         self.accelerator.cali_left()
-        print(self.accelerator._get_cali_forward_A)
         self.db_data["forward_A"] = 1 if self.accelerator._get_cali_forward_A is True else 0
         self.save_button_clicked(False)
         self.show_database()
