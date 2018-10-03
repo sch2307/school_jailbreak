@@ -38,6 +38,8 @@ class Front_Wheels(object):
             if angle < self._angle["left"]:
                 angle = self._angle["left"]
             self.wheel.write(angle)
+        else:
+            print('[ERRNO-400] Angle outside the Left rotation range : {}'.format(angle))
 
     def center_alignment(self):
         """ Turn the front wheels back straight """
@@ -54,6 +56,8 @@ class Front_Wheels(object):
             if angle > self._angle["right"]:
                 angle = self._angle["right"]
             self.wheel.write(angle)
+        else:
+            print('[ERRNO-400] Angle outside the Right rotation range : {}'.format(angle))
 
     def turn(self, angle):
         """ Turn the front wheels to the giving angle """
