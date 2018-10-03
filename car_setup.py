@@ -161,9 +161,10 @@ class Setup(QWidget):
 
     def init_database(self):
         try:
+            """ 2018/10/03 Fixed IndexError occur """
+            err_confirm = False
+
             f = open("./config", "r")
-            print("Config File Exist")
-            print("Init With Current Value")
             f.readline()
             f.readline()
             self.db_data["turning_offset"] = int(f.readline().split("= ")[1].rstrip())
@@ -173,20 +174,32 @@ class Setup(QWidget):
             f.close()
 
         except FileNotFoundError:
-            print("Config File Not Exist")
-            print("Init With Default Value")
-            self.db_data["turning_offset"] = 0
-            self.db_data["forward_A"] = 0
-            self.db_data["forward_B"] = 0
-            self.db_data["debug"] = 0
-            f = open("./config", 'w')
-            f.write("# File based database.\n")
-            f.write("\n")
-            f.write("turning_offset = 0\n")
-            f.write("forward_A = 0\n")
-            f.write("forward_B = 0\n")
-            f.write("debug = 0\n")
-            f.close()
+            print("[INFORMATION] Config File Not Exist")
+            err_confirm = True
+        except IndexError:
+            print("[INFORMATION] Corrupted Config File")
+            err_confirm = True
+        finally:
+            if err_confirm is True:
+                print("[INFORMATION] Init With Default Value")
+                self.makeConfigFile()
+            else:
+                print("[INFORMATION] Config File Exist")
+                print("[INFORMATION] Init With Current Value")
+
+    def makeConfigFile(self):
+        self.db_data["turning_offset"] = 0
+        self.db_data["forward_A"] = 0
+        self.db_data["forward_B"] = 0
+        self.db_data["debug"] = 0
+        f = open("./config", 'w')
+        f.write("# File based database.\n")
+        f.write("\n")
+        f.write("turning_offset = 0\n")
+        f.write("forward_A = 0\n")
+        f.write("forward_B = 0\n")
+        f.write("debug = 0\n")
+        f.close()
 
     def show_database(self):
         f = open("./config", 'r')
