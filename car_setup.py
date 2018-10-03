@@ -182,12 +182,12 @@ class Setup(QWidget):
         finally:
             if err_confirm is True:
                 print("[INFORMATION] Init With Default Value")
-                self.makeConfigFile()
+                self.make_config_file()
             else:
                 print("[INFORMATION] Config File Exist")
                 print("[INFORMATION] Init With Current Value")
 
-    def makeConfigFile(self):
+    def make_config_file(self):
         self.db_data["turning_offset"] = 0
         self.db_data["forward_A"] = 0
         self.db_data["forward_B"] = 0
