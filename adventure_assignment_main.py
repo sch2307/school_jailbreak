@@ -6,33 +6,33 @@
 # this code is used for the student only
 #########################################################################
 
-from myCar import MyCar
+from car import Car
 import time
 
 
-class AssignmentMain(object):
+class myCar(object):
 
     def __init__(self, car_name):
-        self.myCar = MyCar(car_name)
+        self.car = Car(car_name)
 
     def drive_parking(self):
-        self.myCar.drive_parking()
+        self.car.drive_parking()
 
     # =======================================================================
     # ADVENTURE_ASSIGNMENT_CODE
     # Complete the code to perform Adventure Assignment
     # =======================================================================
-    def project_main(self):
+    def car_startup(self):
         # Implement the assignment code here.
         pass
 
 
 if __name__ == "__main__":
     try:
-        Assignment_main = AssignmentMain("CarName")
-        Assignment_main.assignment_main()
+        myCar = myCar("CarName")
+        myCar.car_startup()
 
     except KeyboardInterrupt:
         # when the Ctrl+C key has been pressed,
         # the moving object will be stopped
-        Assignment_main.drive_parking()
+        myCar.drive_parking()

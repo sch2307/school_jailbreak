@@ -1,6 +1,6 @@
 #########################################################################
 # Date: 2018/10/02
-# file name: myCar.py
+# file name: car.py
 # Purpose: this code has been generated for the 4 wheels drive body
 # this code is used for the student only
 #########################################################################
@@ -43,7 +43,7 @@ import front_wheels
 GPIO.setwarnings(False)
 
 
-class MyCar(object):
+class Car(object):
 
     """ Initialize Speed Value """
     SLOWEST = 20

@@ -117,7 +117,6 @@ class Rear_Wheels(object):
             self.right_wheel.debug = True
             self.pwm.debug = True
         else:
-            print(self._DEBUG_INFO, "Set debug off")
             self.left_wheel.debug = False
             self.right_wheel.debug = False
             self.pwm.debug = False

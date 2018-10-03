@@ -312,5 +312,3 @@ class PWM(object):
 
         if self._DEBUG:
             print(self._DEBUG_INFO, "Set debug on")
-        else:
-            print(self._DEBUG_INFO, "Set debug off")

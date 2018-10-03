@@ -106,8 +106,6 @@ class Front_Wheels(object):
             print(self._DEBUG_INFO, "Set wheel debug on")
             self.wheel.debug = True
         else:
-            print(self._DEBUG_INFO, "Set debug off")
-            print(self._DEBUG_INFO, "Set wheel debug off")
             self.wheel.debug = False
 
     def ready(self):
