@@ -8,7 +8,7 @@ if __name__ == '__main__':
     try:
         # Example Of Front Servo Motor Control
         steering = front_wheels.Front_Wheels(db='config')
-        steering.turn_straight()
+        steering.center_alignment()
         time.sleep(1)
         
         # Example Of Real Motor Control

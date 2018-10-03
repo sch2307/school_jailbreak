@@ -35,13 +35,13 @@ class Front_Wheels(object):
             print(self._DEBUG_INFO, "Turn left")
         self.wheel.write(self._angle["left"])
 
-    def turn_straight(self):
+    def center_alignment(self):
         """ Turn the front wheels back straight """
         if self._DEBUG:
             print(self._DEBUG_INFO, "Turn straight")
         self.wheel.write(self._angle["straight"])
 
-    def turn_right(self):
+    def turn_right(self, angle):
         """ Turn the front wheels right """
         if self._DEBUG:
             print(self._DEBUG_INFO, "Turn right")
@@ -87,7 +87,7 @@ class Front_Wheels(object):
         self._turning_offset = value
         self.db.set('turning_offset', value)
         self.wheel.offset = value
-        self.turn_straight()
+        self.center_alignment()
 
     @property
     def debug(self):
@@ -113,38 +113,38 @@ class Front_Wheels(object):
         if self._DEBUG:
             print(self._DEBUG_INFO, 'Turn to "Ready" position')
         self.wheel.offset = self.turning_offset
-        self.turn_straight()
+        self.center_alignment()
 
     def calibration(self):
         """ Get the front wheels to the calibration position. """
         if self._DEBUG:
             print(self._DEBUG_INFO, 'Turn to "Calibration" position')
-        self.turn_straight()
+        self.center_alignment()
         self.cali_turning_offset = self.turning_offset
 
     def cali_left(self):
         """ Calibrate the wheels to left """
         self.cali_turning_offset -= 10
         self.wheel.offset = self.cali_turning_offset
-        self.turn_straight()
+        self.center_alignment()
 
     def cali_right(self):
         """ Calibrate the wheels to right """
         self.cali_turning_offset += 10
         self.wheel.offset = self.cali_turning_offset
-        self.turn_straight()
+        self.center_alignment()
         
     def cali_accurate_left(self):
         """ Accurate Calibrate the wheels to left """
         self.cali_turning_offset -= 1
         self.wheel.offset = self.cali_turning_offset
-        self.turn_straight()
+        self.center_alignment()
 
     def cali_accurate_right(self):
         """ Accurate Calibrate the wheels to right """
         self.cali_turning_offset += 1
         self.wheel.offset = self.cali_turning_offset
-        self.turn_straight()
+        self.center_alignment()
 
     def return_cali_offset(self):
         """ Return the calibration value """

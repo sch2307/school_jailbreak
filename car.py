@@ -104,7 +104,7 @@ class Car(object):
             # ================================================================
             # SET FRONT WHEEL CENTOR ALLIGNMENT
             # ================================================================
-            self.steering.turn_straight()
+            self.steering.center_alignment()
 
             # ================================================================
             # SET APPOINTED OF CAR NAME
@@ -117,7 +117,7 @@ class Car(object):
 
     def drive_parking(self):
         # front wheels center alignment
-        self.steering.turn_straight()
+        self.steering.center_alignment()
 
         # power down both wheels
         self.accelerator.stop()

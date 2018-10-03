@@ -24,7 +24,7 @@ class myCar(object):
 
     def first_main(self):
         # front_wheels center alignment
-        self.car.steering.turn_straight()
+        self.car.steering.center_alignment()
 
         # forward-assignment
         self.car.accelerator.go_forward(30)
@@ -104,7 +104,7 @@ class myCar(object):
 
             # Direction calculate
             if lt_status_now == [0, 0, 1, 0, 0]:
-                self.car.steering.turn(90)
+                self.car.steering.center_alignment()
             # turn right
             elif sum(lt_status_now[:3]) > sum(lt_status_now[2:]):
                 turning_angle = int(90 - step)
