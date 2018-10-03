@@ -151,13 +151,13 @@ class Setup(QWidget):
         PWM_Controller.PWM().setup()
 
         # front_wheels PWM Driver Initialize
-        self.fr_wheels = front_wheels.Front_Wheels(db='config')
-        self.fr_wheels.ready()
-        self.fr_wheels.calibration()
+        self.steering = front_wheels.Front_Wheels(db='config')
+        self.steering.ready()
+        self.steering.calibration()
 
         # rear_wheels PWM Driver Initialize
-        self.rear_wheels_drive = rear_wheels.Rear_Wheels(db='config')
-        self.rear_wheels_drive.ready()
+        self.accelerator = rear_wheels.Rear_Wheels(db='config')
+        self.accelerator.ready()
 
     def init_database(self):
         try:
@@ -176,14 +176,14 @@ class Setup(QWidget):
             print("Config File Not Exist")
             print("Init With Default Value")
             self.db_data["turning_offset"] = 0
-            self.db_data["forward_A"] = 1
+            self.db_data["forward_A"] = 0
             self.db_data["forward_B"] = 0
             self.db_data["debug"] = 0
             f = open("./config", 'w')
             f.write("# File based database.\n")
             f.write("\n")
             f.write("turning_offset = 0\n")
-            f.write("forward_A = 1\n")
+            f.write("forward_A = 0\n")
             f.write("forward_B = 0\n")
             f.write("debug = 0\n")
             f.close()
@@ -214,42 +214,46 @@ class Setup(QWidget):
         f.close()
 
         if is_exit is True:
-            self.rear_wheels_drive.stop()
+            self.accelerator.stop()
             exit()
 
     def left_reverse_clicked(self):
-        self.db_data["forward_A"] = self.db_data["forward_A"] ^ 1
-        self.save_button_clicked(False)
-        self.show_database()
-        if self.is_run:
+        if not self.is_run:
             self.run_button_clicked()
 
-    def right_reverse_clicked(self):
-        self.db_data["forward_B"] = self.db_data["forward_B"] ^ 1
+        self.accelerator.cali_left()
+        print(self.accelerator._get_cali_forward_A)
+        self.db_data["forward_A"] = 1 if self.accelerator._get_cali_forward_A is True else 0
         self.save_button_clicked(False)
         self.show_database()
-        if self.is_run:
+
+    def right_reverse_clicked(self):
+        if not self.is_run:
             self.run_button_clicked()
+
+        self.accelerator.cali_right()
+        self.db_data["forward_B"] = 1 if self.accelerator._get_cali_forward_B is True else 0
+        self.save_button_clicked(False)
+        self.show_database()
 
     def run_button_clicked(self):
         self.is_run = True
-        self.init_modules()
-        self.rear_wheels_drive.forward_with_speed(40)
+        self.accelerator.calibration()
 
     def stop_button_clicked(self):
         self.is_run = False
-        self.rear_wheels_drive.stop()
+        self.accelerator.stop()
 
     def servo_clicked(self, action):
         if action is "left":
-            self.fr_wheels.cali_left()
+            self.steering.cali_left()
         elif action is "right":
-            self.fr_wheels.cali_right()
+            self.steering.cali_right()
         elif action is "a_left":
-            self.fr_wheels.cali_accurate_left()
+            self.steering.cali_accurate_left()
         elif action is "a_right":
-            self.fr_wheels.cali_accurate_right()
-        self.db_data["turning_offset"] = self.fr_wheels.return_cali_offset()
+            self.steering.cali_accurate_right()
+        self.db_data["turning_offset"] = self.steering.return_cali_offset()
         self.save_button_clicked(False)
         self.show_database()
 

@@ -134,8 +134,7 @@ class Rear_Wheels(object):
         """ Get the front wheels to the calibration position. """
         if self._DEBUG:
             print(self._DEBUG_INFO, 'Turn to "Calibration" position')
-        self.speed = 50
-        self.forward()
+        self.go_forward(50)
         self.cali_forward_A = self.forward_A
         self.cali_forward_B = self.forward_B
 
@@ -143,18 +142,20 @@ class Rear_Wheels(object):
         """ Reverse the left wheels forward direction in calibration """
         self.cali_forward_A = not self.cali_forward_A
         self.left_wheel.offset = self.cali_forward_A
-        self.forward()
+        self.go_forward(50)
 
     def cali_right(self):
         """ Reverse the right wheels forward direction in calibration """
         self.cali_forward_B = not self.cali_forward_B
         self.right_wheel.offset = self.cali_forward_B
-        self.forward()
+        self.go_forward(50)
 
-    def cali_ok(self):
-        """ Save the calibration value """
-        self.forward_A = self.cali_forward_A
-        self.forward_B = self.cali_forward_B
-        self.db.set('forward_A', self.forward_A)
-        self.db.set('forward_B', self.forward_B)
-        self.stop()
+    @property
+    def _get_cali_forward_A(self):
+        """ Return forward_A variables """
+        return self.cali_forward_A
+
+    @property
+    def _get_cali_forward_B(self):
+        """ Return forward_B variables """
+        return self.cali_forward_B
